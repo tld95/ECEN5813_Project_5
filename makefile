@@ -8,21 +8,17 @@ RM := rm -rf
 # Compiler
 fb_run: CC := arm-none-eabi-gcc
 fb_debug: CC := arm-none-eabi-gcc
-pc_run: CC := gcc
-pc_debug: CC := gcc
 
 ############################
 # Linker
 fb_run: LL := arm-none-eabi-gcc
 fb_debug: LL := arm-none-eabi-gcc
-pc_run: LL := gcc
-pc_debug: LL := gcc
 
 ############################
 # Binary/exectable to build
 EXE := \
   ./debug/ECEN5813_Project_2.axf
-
+ 
 ############################
 # List of object files
 OBJS := \
@@ -64,7 +60,7 @@ C_DEPS = \
   ./debug/pin_mux.d \
   ./debug/system_MKL25Z4.d \
   ./debug/startup_mkl25z4.d
-
+ 
 ############################
 # Include generated dependcy files (only if not clean target)
 ifneq ($(MAKECMDGOALS),clean)
@@ -77,30 +73,31 @@ endif
 # Compiler options
 fb_run: CC_OPTIONS := -c -DFB_RUN -std=gnu99 -O0 -g -ffunction-sections -fdata-sections -fno-builtin -mcpu=cortex-m0plus -mthumb -DCPU_MKL25Z128VLK4 -D__USE_CMSIS -I"startup" -I"CMSIS" -I"source" -I"board" -I"drivers" -I"utilities"
 fb_debug: CC_OPTIONS := -c -DFB_DEBUG -std=gnu99 -O0 -g -ffunction-sections -fdata-sections -fno-builtin -mcpu=cortex-m0plus -mthumb -DCPU_MKL25Z128VLK4 -D__USE_CMSIS -I"startup" -I"CMSIS" -I"source" -I"board" -I"drivers" -I"utilities"
-pc_run: CC_OPTIONS := -c -DPC_RUN -std=gnu99 -O0 -g -ffunction-sections -fdata-sections -fno-builtin -mcpu=cortex-m0plus -mthumb -DCPU_MKL25Z128VLK4 -D__USE_CMSIS -I"startup" -I"CMSIS" -I"source" -I"board" -I"drivers" -I"utilities"
-pc_debug: CC_OPTIONS := -c -DPC_DEBUG -std=gnu99 -O0 -g -ffunction-sections -fdata-sections -fno-builtin -mcpu=cortex-m0plus -mthumb -DCPU_MKL25Z128VLK4 -D__USE_CMSIS -I"startup" -I"CMSIS" -I"source" -I"board" -I"drivers" -I"utilities"
+pc_run: CC_OPTIONS := -c -DPC_RUN -lm -std=c99 -Wall -Werror -I"source"
+pc_debug: CC_OPTIONS := -c -DPC_DEBUG -std=c99 -Wall -Werror -I"source"
 
 ############################
 # Linker Options
-LL_OPTIONS := -nostdlib -Xlinker -Map="debug/ECEN5813_Project_2.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0plus -mthumb -T ECEN5813_Project_2_Debug.ld -o $(EXE)
+fb_run: LL_OPTIONS := -nostdlib -Xlinker -Map="debug/ECEN5813_Project_2.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0plus -mthumb -T ECEN5813_Project_2_Debug.ld -o $(EXE)
+fb_debug: LL_OPTIONS := -nostdlib -Xlinker -Map="debug/ECEN5813_Project_2.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0plus -mthumb -T ECEN5813_Project_2_Debug.ld -o $(EXE)
 
 ############################
 # Main (all) target
 all:
+# Referenced https://www.cmcrossroads.com/article/making-directories-gnu-make
 fb_run: $(EXE)
 	@echo "*** finished building ***"
 fb_debug: $(EXE)
 	@echo "*** finished building ***"
-pc_run: $(EXE)
-	@echo "*** finished building ***"
+pc_run: 
+	arm-none-eabi-gcc source/MKL25Z128xxx4_Project.c -o debug/project_2.out $(CC_OPTIONS)
 pc_debug: $(EXE)
-	@echo "*** finished building ***"
+	arm-none-eabi-gcc source/MKL25Z128xxx4_Project.c -o debug/project_2.out $(CC_OPTIONS)
 
 ############################
 # Clean target
 clean:
-	-$(RM) $(EXECUTABLES) $(OBJS) $(EXE)
-	-$(RM) ./debug/*.map
+	-$(RM) ./debug/*
 	-@echo ' '
 
 ############################
@@ -135,7 +132,7 @@ $(EXE): $(OBJS) $(USER_OBJS) ECEN5813_Project_2_Debug.ld
 	$(CC) $(CC_OPTIONS) -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
-	
+
 ############################
 # Rule to build the files in the board folder
 ./debug/%.o: ./board/%.c
@@ -143,7 +140,7 @@ $(EXE): $(OBJS) $(USER_OBJS) ECEN5813_Project_2_Debug.ld
 	$(CC) $(CC_OPTIONS) -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
-	
+
 ############################
 # Rule to build the files in the drivers folder
 ./debug/%.o: ./drivers/%.c

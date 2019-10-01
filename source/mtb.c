@@ -50,7 +50,7 @@
  */
  
 /* This is a template for board specific configuration created by MCUXpresso IDE Project Wizard.*/
-
+#if defined(PC_RUN) || defined(PC_DEBUG)
 // Allow MTB to be removed by setting a define (via command line)
 #if !defined (__MTB_DISABLE)
 
@@ -78,4 +78,4 @@
   #endif // (__MTB_BUFFER_SIZE > 0)
 
 #endif // !defined (__MTB_DISABLE)
-
+#endif

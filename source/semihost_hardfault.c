@@ -63,7 +63,7 @@
 // semihosted code in a production build of your application!
 //
 // ****************************************************************************
-
+#if defined(PC_RUN) || defined(PC_DEBUG)
 // Allow handler to be removed by setting a define (via command line)
 #if !defined (__SEMIHOST_HARDFAULT_DISABLE)
 
@@ -106,4 +106,4 @@ void HardFault_Handler(void){
 }
 
 #endif
-
+#endif

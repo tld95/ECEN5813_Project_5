@@ -150,6 +150,9 @@ static void ledOn(uint32_t mSec, ledColors color)
 #ifdef FB_DEBUG
 			PRINTF("LED RED ON %d\n", mSec);
 #endif
+#ifdef PC_RUN
+			printf("LED RED ON %d\n", (int)mSec);
+#endif
 			break;
 		case GREEN:
 #if defined(FB_RUN) || defined(FB_DEBUG)
@@ -158,6 +161,9 @@ static void ledOn(uint32_t mSec, ledColors color)
 #ifdef FB_DEBUG
 			PRINTF("LED GREEN ON %d\n", mSec);
 #endif
+#ifdef PC_RUN
+			printf("LED GREEN ON %d\n", (int)mSec);
+#endif
 			break;
 		case BLUE:
 #if defined(FB_RUN) || defined(FB_DEBUG)
@@ -165,6 +171,9 @@ static void ledOn(uint32_t mSec, ledColors color)
 #endif
 #ifdef FB_DEBUG
 			PRINTF("LED BLUE ON %d\n", mSec);
+#endif
+#ifdef PC_RUN
+			printf("LED BLUE ON %d\n", (int)mSec);
 #endif
 			break;
 		default:
@@ -185,6 +194,9 @@ static void ledOff(uint32_t mSec, ledColors color)
 #ifdef FB_DEBUG
 			PRINTF("LED RED OFF %d\n", mSec);
 #endif
+#ifdef PC_RUN
+			printf("LED RED OFF %d\n", (int)mSec);
+#endif
 			break;
 		case GREEN:
 #if defined(FB_RUN) || defined(FB_DEBUG)
@@ -193,6 +205,9 @@ static void ledOff(uint32_t mSec, ledColors color)
 #ifdef FB_DEBUG
 			PRINTF("LED GREEN OFF %d\n", mSec);
 #endif
+#ifdef PC_RUN
+			printf("LED GREEN OFF %d\n", (int)mSec);
+#endif
 			break;
 		case BLUE:
 #if defined(FB_RUN) || defined(FB_DEBUG)
@@ -200,6 +215,9 @@ static void ledOff(uint32_t mSec, ledColors color)
 #endif
 #ifdef	FB_DEBUG
 			PRINTF("LED BLUE OFF %d\n", mSec);
+#endif
+#ifdef PC_RUN
+			printf("LED BLUE OFF %d\n", (int)mSec);
 #endif
 			break;
 		default:
@@ -218,7 +236,7 @@ static void delay(volatile uint32_t mSec)
 
 //TODO put cpu clock in
 #if defined(PC_RUN) || defined(PC_DEBUG)
-	cyclesPerMsec = 0 / 1000;
+	cyclesPerMsec = 1000;
 #endif
 
 	uint32_t delayCycles = mSec * cyclesPerMsec;
