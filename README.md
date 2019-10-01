@@ -1,5 +1,7 @@
 # ECEN5813 Project 2 Readme
 # Tristan Duenas
+# Project Demonstration Youtube Video Link https://youtu.be/Mu6TOvjGKHw
+
 This repository contains the source/include files, makefile, linker file, and WBS (ECEN5813 Project 2 Final WBS Tristan Duenas.pdf) for ECEN5813 Project 2.
 The project is based on the initial project generated for the MKL25Z128xxx4.
 I implemented main.c, LED_control.c/LED_control.h, timing_control.c/timing_control.h, 
