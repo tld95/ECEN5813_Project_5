@@ -6,13 +6,11 @@ RM := rm -rf
 
 ############################
 # Compiler
-fb_run: CC := arm-none-eabi-gcc
-fb_debug: CC := arm-none-eabi-gcc
+CC := arm-none-eabi-gcc
 
 ############################
 # Linker
-fb_run: LL := arm-none-eabi-gcc
-fb_debug: LL := arm-none-eabi-gcc
+LL := arm-none-eabi-gcc
 
 ############################
 # Binary/exectable to build
@@ -73,8 +71,6 @@ endif
 # Compiler options
 fb_run: CC_OPTIONS := -c -DFB_RUN -std=gnu99 -O0 -g -ffunction-sections -fdata-sections -fno-builtin -mcpu=cortex-m0plus -mthumb -DCPU_MKL25Z128VLK4 -D__USE_CMSIS -I"startup" -I"CMSIS" -I"source" -I"board" -I"drivers" -I"utilities"
 fb_debug: CC_OPTIONS := -c -DFB_DEBUG -std=gnu99 -O0 -g -ffunction-sections -fdata-sections -fno-builtin -mcpu=cortex-m0plus -mthumb -DCPU_MKL25Z128VLK4 -D__USE_CMSIS -I"startup" -I"CMSIS" -I"source" -I"board" -I"drivers" -I"utilities"
-pc_run: CC_OPTIONS := -c -DPC_RUN -lm -std=c99 -Wall -Werror -I"source"
-pc_debug: CC_OPTIONS := -c -DPC_DEBUG -std=c99 -Wall -Werror -I"source"
 
 ############################
 # Linker Options
@@ -90,9 +86,9 @@ fb_run: $(EXE)
 fb_debug: $(EXE)
 	@echo "*** finished building ***"
 pc_run: 
-	arm-none-eabi-gcc source/MKL25Z128xxx4_Project.c -o debug/project_2.out $(CC_OPTIONS)
+	gcc source/MKL25Z128xxx4_Project.c -o debug/project.exe -DPC_RUN -std=c99 -Wall -Werror
 pc_debug: $(EXE)
-	arm-none-eabi-gcc source/MKL25Z128xxx4_Project.c -o debug/project_2.out $(CC_OPTIONS)
+	gcc source/MKL25Z128xxx4_Project.c -o debug/project.exe -DPC_DEBUG -std=c99 -Wall -Werror
 
 ############################
 # Clean target
