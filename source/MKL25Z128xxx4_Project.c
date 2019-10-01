@@ -35,6 +35,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+
 #if defined(FB_RUN) || defined(FB_DEBUG)
 #include "board.h"
 #include "peripherals.h"
@@ -45,6 +46,10 @@
 
 #define LED3_PORT GPIOD
 #define LED3_PIN 1U
+#endif
+
+#if defined(PC_RUN) || defined(PC_DEBUG)
+#include <sys/time.h>
 #endif
 
 typedef enum
@@ -65,7 +70,6 @@ static void ledOn(uint32_t mSec, ledColors color);
 static void ledOff(uint32_t mSec, ledColors color);
 static void runTimeDelayLoop(ledColors color);
 static ledColors getNextLED_ColorState(ledColors currentColor);
-
 
 /*
  * @brief   Application entry point.
@@ -152,6 +156,7 @@ static void ledOn(uint32_t mSec, ledColors color)
 #endif
 #ifdef PC_RUN
 			printf("LED RED ON %d\n", (int)mSec);
+			fflush(stdout);
 #endif
 			break;
 		case GREEN:
@@ -163,6 +168,7 @@ static void ledOn(uint32_t mSec, ledColors color)
 #endif
 #ifdef PC_RUN
 			printf("LED GREEN ON %d\n", (int)mSec);
+			fflush(stdout);
 #endif
 			break;
 		case BLUE:
@@ -174,6 +180,7 @@ static void ledOn(uint32_t mSec, ledColors color)
 #endif
 #ifdef PC_RUN
 			printf("LED BLUE ON %d\n", (int)mSec);
+			fflush(stdout);
 #endif
 			break;
 		default:
@@ -196,6 +203,7 @@ static void ledOff(uint32_t mSec, ledColors color)
 #endif
 #ifdef PC_RUN
 			printf("LED RED OFF %d\n", (int)mSec);
+			fflush(stdout);
 #endif
 			break;
 		case GREEN:
@@ -207,6 +215,7 @@ static void ledOff(uint32_t mSec, ledColors color)
 #endif
 #ifdef PC_RUN
 			printf("LED GREEN OFF %d\n", (int)mSec);
+			fflush(stdout);
 #endif
 			break;
 		case BLUE:
@@ -218,6 +227,7 @@ static void ledOff(uint32_t mSec, ledColors color)
 #endif
 #ifdef PC_RUN
 			printf("LED BLUE OFF %d\n", (int)mSec);
+			fflush(stdout);
 #endif
 			break;
 		default:
@@ -229,15 +239,8 @@ static void ledOff(uint32_t mSec, ledColors color)
 
 static void delay(volatile uint32_t mSec)
 {
-	uint32_t cyclesPerMsec = 0;
 #if defined(FB_RUN) || defined(FB_DEBUG)
-	cyclesPerMsec = oscConfig_BOARD_BootClockRUN.freq / 1000;
-#endif
-
-//TODO put cpu clock in
-#if defined(PC_RUN) || defined(PC_DEBUG)
-	cyclesPerMsec = 1000;
-#endif
+	uint32_t cyclesPerMsec = oscConfig_BOARD_BootClockRUN.freq / 1000;
 
 	uint32_t delayCycles = mSec * cyclesPerMsec;
 	while(delayCycles!=0)
@@ -245,4 +248,14 @@ static void delay(volatile uint32_t mSec)
 		__asm volatile("NOP");
 		delayCycles--;
 	}
+#endif
+
+#if defined(PC_RUN) || defined(PC_DEBUG)
+	uint64_t cyclesPerMsec = CLOCKS_PER_SEC * 1000;
+	uint64_t delayCycles = mSec * cyclesPerMsec;
+	while(delayCycles!=0)
+	{
+		delayCycles--;
+	}
+#endif
 }
