@@ -1,4 +1,7 @@
-# Referenced https://github.com/ErichStyger/mcuoneclipse/blob/master/Examples/MCUXpresso/FRDM-KL25Z/MyMakeProject/makefile
+# PES Project Two Makefile
+# Tristan Duenas
+# References:
+# https://github.com/ErichStyger/mcuoneclipse/blob/master/Examples/MCUXpresso/FRDM-KL25Z/MyMakeProject/makefile
 
 ############################
 # Command for removing files
@@ -20,7 +23,9 @@ EXE := \
 ############################
 # List of object files
 OBJS := \
-  ./debug/MKL25Z128xxx4_Project.o \
+  ./debug/main.o \
+  ./debug/LED_control.o \
+  ./debug/timing_control.o \
   ./debug/mtb.o \
   ./debug/semihost_hardfault.o \
   ./debug/fsl_clock.o \
@@ -41,7 +46,9 @@ OBJS := \
 ############################
 # List of dependency files
 C_DEPS = \
-  ./debug/MKL25Z128xxx4_Project.d \
+  ./debug/main.d \
+  ./debug/LED_control.d \
+  ./debug/timing_control.d \
   ./debug/mtb.d \
   ./debug/semihost_hardfault.d \
   ./debug/fsl_clock.d \
@@ -74,8 +81,7 @@ fb_debug: CC_OPTIONS := -c -DFB_DEBUG -std=gnu99 -O0 -g -ffunction-sections -fda
 
 ############################
 # Linker Options
-fb_run: LL_OPTIONS := -nostdlib -Xlinker -Map="debug/ECEN5813_Project_2.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0plus -mthumb -T ECEN5813_Project_2_Debug.ld -o $(EXE)
-fb_debug: LL_OPTIONS := -nostdlib -Xlinker -Map="debug/ECEN5813_Project_2.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0plus -mthumb -T ECEN5813_Project_2_Debug.ld -o $(EXE)
+LL_OPTIONS := -nostdlib -Xlinker -Map="debug/ECEN5813_Project_2.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0plus -mthumb -T ECEN5813_Project_2_Debug.ld -o $(EXE)
 
 ############################
 # Main (all) target
@@ -86,9 +92,9 @@ fb_run: $(EXE)
 fb_debug: $(EXE)
 	@echo "*** finished building ***"
 pc_run: 
-	gcc source/MKL25Z128xxx4_Project.c -o debug/project.exe -DPC_RUN -std=c99 -Wall -Werror
-pc_debug: $(EXE)
-	gcc source/MKL25Z128xxx4_Project.c -o debug/project.exe -DPC_DEBUG -std=c99 -Wall -Werror
+	gcc source/main.c source/LED_control.c source/timing_control.c -o debug/pc_run.exe -DPC_RUN -std=c99 -Wall -Werror
+pc_debug:
+	gcc source/main.c source/LED_control.c source/timing_control.c -o debug/pc_debug.exe -DPC_DEBUG -std=c99 -Wall -Werror
 
 ############################
 # Clean target
