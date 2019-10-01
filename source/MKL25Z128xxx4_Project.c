@@ -88,11 +88,11 @@ int main(void) {
 	ledColors startingColor = RED;
 
 #if defined(FB_DEBUG) || defined(PC_DEBUG)
-	PRINTF("Program Start");
+	PRINTF("Program Start\n");
 #endif
     runTimeDelayLoop(startingColor);
 #if defined(FB_DEBUG) || defined(PC_DEBUG)
-    PRINTF("Program End");
+    PRINTF("Program End\n");
 #endif
     return 0 ;
 }
@@ -105,8 +105,8 @@ static void runTimeDelayLoop(ledColors color)
 	{
 		for (uint32_t index = 0; index < NUM_LED_ON_OFF_STATES; index += 2)
 		{
-			ledOn(ledTimeCycles[index], BLUE);
-			ledOff(ledTimeCycles[index+1], BLUE);
+			ledOn(ledTimeCycles[index], color);
+			ledOff(ledTimeCycles[index+1], color);
 			threeCycleCount++;
 			if (threeCycleCount > 2)
 			{
