@@ -32,8 +32,7 @@ Building the fb_run target requires the following steps:
 - Click Apply, and Apply and Close buttons on Builder Settings Tab
 - Right click on ECEN5813_Project_2 and click Build Project
 - Verify in Console perspective, the fb_run target build completed successfully
-
-#ECEN5813_Project_2.axf for fb_run target can be found in debug\ECEN5813_Project_2.axf
+- ECEN5813_Project_2.axf for fb_run target can be found in debug\ECEN5813_Project_2.axf
 
 Running the fb_run target requires the following steps:
 
@@ -52,8 +51,7 @@ Building the fb_debug target requires the following steps:
 - Click Apply, and Apply and Close buttons on Builder Settings Tab
 - Right click on ECEN5813_Project_2 and click Build Project
 - Verify in Console perspective, the fb_run target build completed successfully
-
-# ECEN5813_Project_2.axf for fb_debug target can be found in debug\ECEN5813_Project_2.axf
+- ECEN5813_Project_2.axf for fb_debug target can be found in debug\ECEN5813_Project_2.axf
 
 Running the fb_debug target requires the following steps:
 
@@ -76,8 +74,7 @@ Building the pc_run target requires the following steps:
 - In the Enviornment tab click Apply, and the Apply and Close
 - Right click on ECEN5813_Project_2 and click Build Project
 - Verify in Console perspective, the pc_run target build completed successfully
-
-# pc_run.exe for pc_run target can be found in debug\pc_run.exe
+- pc_run.exe for pc_run target can be found in debug\pc_run.exe
 
 Running the pc_run target requires the following steps:
 
@@ -99,8 +96,7 @@ Building the pc_debug target requires the following steps:
 - In the Enviornment tab click Apply, and the Apply and Close
 - Right click on ECEN5813_Project_2 and click Build Project
 - Verify in Console perspective, the pc_debug target build completed successfully
-
-# pc_debug.exe for pc_debug target can be found in debug\pc_debug.exe
+- pc_debug.exe for pc_debug target can be found in debug\pc_debug.exe
 
 Running the pc_debug target requires the following steps:
 
