@@ -12,5 +12,6 @@
 #include "mem_status.h"
 
 mem_status write_memory(uint32_t *loc, uint8_t value);
+mem_status write_memory_16_bit_value(uint32_t *loc, uint16_t value);
 
 #endif

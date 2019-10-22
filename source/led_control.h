@@ -6,6 +6,8 @@
 #ifndef __LED_CONTROL_H__
 #define __LED_CONTROL_H__
 
+#include "logger.h"
+
 #if defined(FB_RUN) || defined(FB_DEBUG)
 #include "board.h"
 #include "fsl_debug_console.h"

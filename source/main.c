@@ -53,6 +53,7 @@
 #include "invert_block.h"
 #include "write_pattern.h"
 #include "verify_pattern.h"
+#include "get_address.h"
 #include "logger.h"
 #include "led_control.h"
 #include "timing_control.h"
@@ -70,7 +71,10 @@
 #define LED3_PIN 1U
 #endif
 
+#define TWO_MS 2000
+#define ONE 1
 #define SIXTEEN 16
+#define FOUR_BYTES 4
 #define SIXTEEN_BYTES 16
 #define SIXTY_FOUR_BYTES 64
 #define SEED 255
@@ -96,11 +100,12 @@ int main(void) {
 	Log_string("Program Started.");
 	Log_string("");
 	led_control(OFF);
-	delay(1000);
+	delay(TWO_MS);
 
 	uint32_t* memory_block = NULL;
 	uint8_t* bytePointer = NULL;
 	uint32_t* miscompareListPointer = NULL;
+	uint32_t* offsetAddress = NULL;
 	mem_status status = SUCCESS;
 	mem_status tempStatus = SUCCESS;
 
@@ -110,7 +115,7 @@ int main(void) {
 	led_control(BLUE);
 	memory_block = allocate_words(SIXTEEN_BYTES);
 	Log_string("");
-	delay(1000);
+	delay(TWO_MS);
 
 	// Write a memory pattern to the allocated 16 byte region using a selected seed
 	status |= write_pattern(memory_block, SIXTEEN_BYTES, SEED);
@@ -126,11 +131,12 @@ int main(void) {
 	free_words((uint32_t*)bytePointer);
 	free_words(miscompareListPointer);
 	Log_string("");
-	delay(1000);
+	delay(TWO_MS);
 
 	//Write 0xFFEE to a position within that region (location + some offset you select)
 	uint16_t value = 0xFFEE;
-	memcpy(memory_block + 1, &value, sizeof(uint16_t));
+	offsetAddress = get_address(memory_block, ONE);
+	status |= write_memory_16_bit_value(offsetAddress, value);
 	// Display that region’s memory pattern
 	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
 	status |= tempStatus;
@@ -142,7 +148,7 @@ int main(void) {
 	free_words((uint32_t*)bytePointer);
 	free_words(miscompareListPointer);
 	Log_string("");
-	delay(1000);
+	delay(TWO_MS);
 
 	// Write a memory pattern to the region using the same seed as before
 	status |= write_pattern(memory_block, SIXTEEN_BYTES, SEED);
@@ -158,10 +164,11 @@ int main(void) {
 	free_words((uint32_t*)bytePointer);
 	free_words(miscompareListPointer);
 	Log_string("");
-	delay(1000);
+	delay(TWO_MS);
 
 	// Invert 4 bytes in the region (location + some offset)
-	status |= invert_block(memory_block+1, 4);
+	offsetAddress = get_address(memory_block, ONE);
+	status |= invert_block(offsetAddress, FOUR_BYTES);
 	setLED_RedOnError(status);
 	// Display that region’s memory pattern
 	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
@@ -174,10 +181,11 @@ int main(void) {
 	free_words((uint32_t*)bytePointer);
 	free_words(miscompareListPointer);
 	Log_string("");
-	delay(1000);
+	delay(TWO_MS);
 
 	// Invert those 4 bytes again in the LMA region (location + some offset)
-	status |= invert_block(memory_block+1, 4);
+	offsetAddress = get_address(memory_block, ONE);
+	status |= invert_block(offsetAddress, FOUR_BYTES);
 	setLED_RedOnError(status);
 	// Display that region’s memory pattern
 	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
@@ -190,7 +198,7 @@ int main(void) {
 	free_words((uint32_t*)bytePointer);
 	free_words(miscompareListPointer);
 	Log_string("");
-	delay(1000);
+	delay(TWO_MS);
 
 	if (status == SUCCESS)
 	{

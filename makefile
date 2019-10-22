@@ -32,6 +32,7 @@ OBJS := \
   ./debug/write_pattern.o \
   ./debug/gen_pattern.o \
   ./debug/verify_pattern.o \
+  ./debug/get_address.o \
   ./debug/logger.o \
   ./debug/led_control.o \
   ./debug/timing_control.o \
@@ -64,6 +65,7 @@ C_DEPS = \
   ./debug/write_pattern.d \
   ./debug/verify_patter.d \
   ./debug/gen_pattern.d \
+  ./debug/get_address.d \
   ./debug/logger.d \
   ./debug/led_control.d \
   ./debug/timing_control.d \
@@ -110,9 +112,9 @@ fb_run: $(EXE)
 fb_debug: $(EXE)
 	@echo "*** finished building ***"
 pc_run: 
-	gcc source/main.c source/led_control.c source/timing_control.c source/allocate_words.c source/free_words.c source/display_memory.c source/write_memory.c source/invert_block.c source/write_pattern.c source/gen_pattern.c source/verify_pattern.c source/logger.c -o debug/pc_run.exe -DPC_RUN -std=c99 -Wall -Werror
+	gcc source/main.c source/led_control.c source/timing_control.c source/allocate_words.c source/free_words.c source/display_memory.c source/write_memory.c source/invert_block.c source/write_pattern.c source/gen_pattern.c source/verify_pattern.c source/logger.c source/get_address.c -o debug/pc_run.exe -DPC_RUN -std=c99 -Wall -Werror
 pc_debug:
-	gcc source/main.c source/led_control.c source/timing_control.c source/allocate_words.c source/free_words.c source/display_memory.c source/write_memory.c source/invert_block.c source/write_pattern.c source/gen_pattern.c source/verify_pattern.c source/logger.c -o  debug/pc_debug.exe -DPC_DEBUG -std=c99 -Wall -Werror
+	gcc source/main.c source/led_control.c source/timing_control.c source/allocate_words.c source/free_words.c source/display_memory.c source/write_memory.c source/invert_block.c source/write_pattern.c source/gen_pattern.c source/verify_pattern.c source/logger.c source/get_address.c -o  debug/pc_debug.exe -DPC_DEBUG -std=c99 -Wall -Werror
 
 ############################
 # Clean target
