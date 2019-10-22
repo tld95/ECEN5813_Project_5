@@ -18,13 +18,22 @@ LL := arm-none-eabi-gcc
 ############################
 # Binary/exectable to build
 EXE := \
-  ./debug/ECEN5813_Project_2.axf
+  ./debug/ECEN5813_Project_3.axf
  
 ############################
 # List of object files
 OBJS := \
   ./debug/main.o \
-  ./debug/LED_control.o \
+  ./debug/allocate_words.o \
+  ./debug/free_words.o \
+  ./debug/display_memory.o \
+  ./debug/write_memory.o \
+  ./debug/invert_block.o \
+  ./debug/write_pattern.o \
+  ./debug/gen_pattern.o \
+  ./debug/verify_pattern.o \
+  ./debug/logger.o \
+  ./debug/led_control.o \
   ./debug/timing_control.o \
   ./debug/mtb.o \
   ./debug/semihost_hardfault.o \
@@ -47,7 +56,16 @@ OBJS := \
 # List of dependency files
 C_DEPS = \
   ./debug/main.d \
-  ./debug/LED_control.d \
+  ./debug/allocate_words.d \
+  ./debug/free_words.d \
+  ./debug/display_memory.d \
+  ./debug/write_memory.d \
+  ./debug/invert_block.d \
+  ./debug/write_pattern.d \
+  ./debug/verify_patter.d \
+  ./debug/gen_pattern.d \
+  ./debug/logger.d \
+  ./debug/led_control.d \
   ./debug/timing_control.d \
   ./debug/mtb.d \
   ./debug/semihost_hardfault.d \
@@ -81,7 +99,7 @@ fb_debug: CC_OPTIONS := -c -DFB_DEBUG -std=gnu99 -O0 -g -ffunction-sections -fda
 
 ############################
 # Linker Options
-LL_OPTIONS := -nostdlib -Xlinker -Map="debug/ECEN5813_Project_2.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0plus -mthumb -T ECEN5813_Project_2_Debug.ld -o $(EXE)
+LL_OPTIONS := -nostdlib -Xlinker -Map="debug/ECEN5813_Project_3.map" -Xlinker --gc-sections -Xlinker -print-memory-usage -mcpu=cortex-m0plus -mthumb -T ECEN5813_Project_3_Debug.ld -o $(EXE)
 
 ############################
 # Main (all) target
@@ -92,9 +110,9 @@ fb_run: $(EXE)
 fb_debug: $(EXE)
 	@echo "*** finished building ***"
 pc_run: 
-	gcc source/main.c source/LED_control.c source/timing_control.c -o debug/pc_run.exe -DPC_RUN -std=c99 -Wall -Werror
+	gcc source/main.c source/led_control.c source/timing_control.c source/allocate_words.c source/free_words.c source/display_memory.c source/write_memory.c source/invert_block.c source/write_pattern.c source/gen_pattern.c source/verify_pattern.c source/logger.c -o debug/pc_run.exe -DPC_RUN -std=c99 -Wall -Werror
 pc_debug:
-	gcc source/main.c source/LED_control.c source/timing_control.c -o debug/pc_debug.exe -DPC_DEBUG -std=c99 -Wall -Werror
+	gcc source/main.c source/led_control.c source/timing_control.c source/allocate_words.c source/free_words.c source/display_memory.c source/write_memory.c source/invert_block.c source/write_pattern.c source/gen_pattern.c source/verify_pattern.c source/logger.c -o  debug/pc_debug.exe -DPC_DEBUG -std=c99 -Wall -Werror
 
 ############################
 # Clean target
@@ -104,7 +122,7 @@ clean:
 
 ############################
 # Rule to link the executable
-$(EXE): $(OBJS) $(USER_OBJS) ECEN5813_Project_2_Debug.ld
+$(EXE): $(OBJS) $(USER_OBJS) ECEN5813_Project_3_Debug.ld
 	@echo 'Building target: $@'
 	@echo 'Invoking: Linker'
 	$(LL) $(LL_OPTIONS) $(OBJS) $(LIBS)

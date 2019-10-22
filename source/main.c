@@ -29,10 +29,10 @@
  */
  
 /*
- * PES Project Two main source code implementation
+ * PES Project Three main source code implementation
  * Tristan Duenas
  * References:
- * https://stackoverflow.com/questions/15436060/how-to-get-timestamp-in-c
+ * PES Project 3 (1.5)
  */
 
 /*
@@ -43,8 +43,18 @@
  * PC_DEBUG For running on local PC without LED output with console output (with time stamps)
  */
 
-// LED/Timing Project 2 C modules
-#include "LED_control.h"
+#include <stddef.h>
+
+// Project 3 C modules
+#include "allocate_words.h"
+#include "free_words.h"
+#include "display_memory.h"
+#include "write_memory.h"
+#include "invert_block.h"
+#include "write_pattern.h"
+#include "verify_pattern.h"
+#include "logger.h"
+#include "led_control.h"
 #include "timing_control.h"
 
 // KL25Z hardware includes/defines
@@ -60,13 +70,12 @@
 #define LED3_PIN 1U
 #endif
 
-#define NUM_CYCLES 10
-#define NUM_LED_ON_OFF_STATES 20
-static uint32_t ledTimeCycles[NUM_LED_ON_OFF_STATES] = {
-		3000,1000,2000,600,1000,400,1000,200,500,100,500,100,500,100,1000,200,1000,400,2000,600
-};
+#define SIXTEEN 16
+#define SIXTEEN_BYTES 16
+#define SIXTY_FOUR_BYTES 64
+#define SEED 255
 
-static void runTimeDelayLoop(ledColors color);
+void setLED_RedOnError(mem_status state);
 
 int main(void) {
 
@@ -83,41 +92,122 @@ int main(void) {
     LED_BLUE_INIT(1);
 #endif
 
-	ledColors startingColor = RED;
+	Log_enable();
+	Log_string("Program Started.");
+	Log_string("");
+	led_control(OFF);
+	delay(1000);
 
-#ifdef FB_DEBUG
-	PRINTF("Program Start\n");
-#endif
-#ifdef PC_DEBUG
-	printf("Program Start\n");
-#endif
-    runTimeDelayLoop(startingColor);
-#ifdef FB_DEBUG
-    PRINTF("Program End\n");
-#endif
-#ifdef PC_DEBUG
-    printf("Program End\n");
-#endif
+	uint32_t* memory_block = NULL;
+	uint8_t* bytePointer = NULL;
+	uint32_t* miscompareListPointer = NULL;
+	mem_status status = SUCCESS;
+	mem_status tempStatus = SUCCESS;
+
+	// Referenced comments from PES Project 3 (1.5)
+
+	// Allocate 16 bytes
+	led_control(BLUE);
+	memory_block = allocate_words(SIXTEEN_BYTES);
+	Log_string("");
+	delay(1000);
+
+	// Write a memory pattern to the allocated 16 byte region using a selected seed
+	status |= write_pattern(memory_block, SIXTEEN_BYTES, SEED);
+	setLED_RedOnError(status);
+	// Display that region’s memory pattern
+	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	// Verify that region’s memory pattern (should pass)
+	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	free_words((uint32_t*)bytePointer);
+	free_words(miscompareListPointer);
+	Log_string("");
+	delay(1000);
+
+	//Write 0xFFEE to a position within that region (location + some offset you select)
+	uint16_t value = 0xFFEE;
+	memcpy(memory_block + 1, &value, sizeof(uint16_t));
+	// Display that region’s memory pattern
+	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	// Verify the memory pattern again (should error)
+	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	free_words((uint32_t*)bytePointer);
+	free_words(miscompareListPointer);
+	Log_string("");
+	delay(1000);
+
+	// Write a memory pattern to the region using the same seed as before
+	status |= write_pattern(memory_block, SIXTEEN_BYTES, SEED);
+	setLED_RedOnError(status);
+	// Display that region’s memory pattern
+	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	// Verify that memory pattern again (should pass)
+	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	free_words((uint32_t*)bytePointer);
+	free_words(miscompareListPointer);
+	Log_string("");
+	delay(1000);
+
+	// Invert 4 bytes in the region (location + some offset)
+	status |= invert_block(memory_block+1, 4);
+	setLED_RedOnError(status);
+	// Display that region’s memory pattern
+	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	// Verify the memory pattern again (should error)
+	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	free_words((uint32_t*)bytePointer);
+	free_words(miscompareListPointer);
+	Log_string("");
+	delay(1000);
+
+	// Invert those 4 bytes again in the LMA region (location + some offset)
+	status |= invert_block(memory_block+1, 4);
+	setLED_RedOnError(status);
+	// Display that region’s memory pattern
+	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	// Verify that memory pattern again (should pass)
+	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
+	status |= tempStatus;
+	setLED_RedOnError(status);
+	free_words((uint32_t*)bytePointer);
+	free_words(miscompareListPointer);
+	Log_string("");
+	delay(1000);
+
+	if (status == SUCCESS)
+	{
+		led_control(GREEN);
+	}
+
+	// Free the 16 byte allocated region (if necessary on your target)
+	free_words(memory_block);
+	Log_string("Program Ended.");
+	Log_disable();
     return 0 ;
 }
 
-static void runTimeDelayLoop(ledColors color)
+void setLED_RedOnError(mem_status state)
 {
-	uint32_t cycles = 0;
-	uint32_t threeCycleCount = 0;
-	while (cycles < NUM_CYCLES)
+	if (state == FAILED)
 	{
-		for (uint32_t index = 0; index < NUM_LED_ON_OFF_STATES; index += 2)
-		{
-			ledOn(ledTimeCycles[index], color);
-			ledOff(ledTimeCycles[index+1], color);
-			threeCycleCount++;
-			if (threeCycleCount > 2)
-			{
-				color = getNextLED_ColorState(color);
-				threeCycleCount = 0;
-			}
-		}
-		cycles++;
+		led_control(RED);
 	}
 }

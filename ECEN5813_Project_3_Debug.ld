@@ -9,8 +9,8 @@
  * MCUXpresso IDE v11.0.1 [Build 2563] [2019-09-01] on Sep 30, 2019 12:11:28 AM
  */
 
-INCLUDE "ECEN5813_Project_2_Debug_library.ld"
-INCLUDE "ECEN5813_Project_2_Debug_memory.ld"
+INCLUDE "ECEN5813_Project_3_Debug_library.ld"
+INCLUDE "ECEN5813_Project_3_Debug_memory.ld"
 
 ENTRY(ResetISR)
 
