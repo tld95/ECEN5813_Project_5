@@ -1,4 +1,4 @@
-# PES Project Two Makefile
+# PES Project Three Makefile
 # Tristan Duenas
 # References:
 # https://github.com/ErichStyger/mcuoneclipse/blob/master/Examples/MCUXpresso/FRDM-KL25Z/MyMakeProject/makefile

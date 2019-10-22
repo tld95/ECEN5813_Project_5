@@ -1,6 +1,6 @@
 # ECEN5813 Project 3 Readme
 # Tristan Duenas
-# Project Demonstration Youtube Video Link 
+# Project Demonstration Youtube Video Link https://youtu.be/nHP0Cdw7QX0
 
 This repository contains the source/include files, makefile, linker file, UML Activity Diagram, and UML Sequence Diagram for ECEN5813 Project 3.
 The project is based on the initial project generated for the MKL25Z128xxx4.
@@ -24,14 +24,15 @@ is output when logging is enabled. If the verification fails, the addresses and 
 The write_pattern.c module writes a generated pattern based on a seed to a block of memory.
 The mem_status.h header includes the enum definition for the mem_status return type.
 I wrote the makefile by hand. The makefile has the ability to build 4 different targets.
+I had difficulty with doing the bound checks.
 fb_run (LED enabled and logging disabled), fb_debug (LED and logging enabled), pc_run (LED and logging disabled), and pc_debug (LED disabled and logging enabled).
 Depending on the target built, different sections of the source files I implemented will be used.
-- The fb_run target builds with the FB_RUN build flag.
-- The fb_debug target builds with the FB_DEBUG build flag.
-- The pc_run target builds with the PC_RUN build flag.
-- The pc_debug target builds with the PC_DEBUG build flag.
+- The fb_run (LED enabled and logging disabled) target builds with the FB_RUN build flag.
+- The fb_debug (LED and logging enabled) target builds with the FB_DEBUG build flag.
+- The pc_run (LED and logging disabled) target builds with the PC_RUN build flag. Nothing really outputs for this one, but the test runs in the background.
+- The pc_debug (LED disabled and logging enabled) target builds with the PC_DEBUG build flag.
 
-# All build targets will generate their final .AXF/.exe file in the debug folder in ECEN5813_Project_3
+# All build targets will generate their final .AXF /.exe file in the debug folder in ECEN5813_Project_3
 
 Building the fb_run target requires the following steps:
 
