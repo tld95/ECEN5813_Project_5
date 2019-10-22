@@ -23,11 +23,17 @@ typedef enum logStatus
 	ENABLED = 1
 } logStatus;
 
+// Enables logging
 void Log_enable();
+// Disables logging
 void Log_disable();
+// Returns current logging enabled/disabled status
 logStatus Log_status();
+// Logs a block of data from memory
 void Log_data(uint8_t *address, size_t length);
+// Logs a string
 void Log_string(char *string);
+// Logs an integer
 void Log_integer(size_t integer);
 
 #endif

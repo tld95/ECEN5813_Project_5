@@ -12,6 +12,7 @@
 #include "mem_status.h"
 #include "logger.h"
 
+// Takes a block of memory and inverts a designated amount of bytes by XORing with 0xFF.
 mem_status invert_block(uint32_t *loc, size_t length);
 
 #endif

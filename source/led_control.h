@@ -21,6 +21,7 @@ typedef enum ledStates
 	OFF,
 } ledStates;
 
+// Provides the functionality of commanding the board's LED to GREEN, RED, BLUE, or OFF.
 void led_control(ledStates commandedLED_State);
 
 #endif

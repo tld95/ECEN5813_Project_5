@@ -19,6 +19,8 @@
 #include "fsl_debug_console.h"
 #endif
 
+// Copies a piece of memory from a block of memory, and will display the copied memory in
+// log enabled mode.
 uint8_t* display_memory(uint32_t *loc, size_t length, mem_status *status);
 
 #endif

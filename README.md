@@ -2,21 +2,21 @@
 # Tristan Duenas
 # Project Demonstration YouTube Video Link https://youtu.be/nHP0Cdw7QX0
 
-This repository contains the source/include files, makefile, linker file, UML Activity Diagram, and UML Sequence Diagram for ECEN5813 Project 3.
+This repository contains the source/include files, makefile, linker file, UML Activity Diagram (ECEN5813_UML_Activity_Diagram_Project_3.pdf), and UML Sequence Diagram (ECEN5813_UML_Sequence_Diagram_Project_3.pdf) for ECEN5813 Project 3.
 The project is based on the initial project generated for the MKL25Z128xxx4.
 I implemented main.c, allocate_words.c/.h, display_memory.c/.h, free_words.c/.h, gen_pattern.c/.h, get_address.c/.h, invert_block.c/.h, led_control.c/.h,
 logger.c/.h, timing_control.c/.h, verify_pattern.c/.h, write_pattern.c/.h, and mem_status.h
 which are located in the source folder.
 The main.c module contains the full execution sequence of the memory tests.
 The allocate_words.c module contains the functionality for allocating dynamic memory on the heap. I use malloc for both the PC/Board versions.
-The display_memory.c module contains the functionality for copying a peice of memory from a block of memory, and will display the copied memory in
+The display_memory.c module contains the functionality for copying a piece of memory from a block of memory, and will display the copied memory in
 log enabled mode.
 The free_words.c module frees dynamically allocated memory from the heap using the free function. I use free for both the PC/Board versions.
 The gen_pattern.c module takes a seed and XORs each byte memory block provided with that seed to create a deterministic pseudo random pattern.
-The get_address.c module takes a base address and offet, and returns a new address with the comibined base address and offset.
+The get_address.c module takes a base address and offset, and returns a new address with the combined base address and offset.
 The invert_block.c module takes a block of memory and inverts a designated amount of bytes by XORing with 0xFF.
 The led_control.c module provides the functionality of commanding the board's LED to GREEN, RED, BLUE, or OFF.
-the logger.c module provides the functionality of logginc blocks of memory/messages.
+the logger.c module provides the functionality of logging blocks of memory/messages.
 The timing_control.c module provides the ability to delay through waiting clock cycles between test runs, to allow the LED/log 
 prints to be visible.
 The verify_pattern.c module generates a pattern based on a seed, and verifies it matches a block of memory. The pattern generated to verify 

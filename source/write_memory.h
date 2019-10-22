@@ -11,7 +11,9 @@
 #include <stddef.h>
 #include "mem_status.h"
 
+// Writes 8 bit value to memory location
 mem_status write_memory(uint32_t *loc, uint8_t value);
+// Write 16 bit value to memory location
 mem_status write_memory_16_bit_value(uint32_t *loc, uint16_t value);
 
 #endif

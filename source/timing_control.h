@@ -1,6 +1,7 @@
 /*
- *  PES Project Two Timing Control header code implementation
+ *  PES Project Two/Three Timing Control header code implementation
  *	Tristan Duenas
+ *	References: My (Tristan Duenas) PES Project 2 timing_control module
  */
 
 #ifndef __TIMING_CONTROL_H__

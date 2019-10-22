@@ -15,6 +15,7 @@
 #include "free_words.h"
 #include "logger.h"
 
+// Writes a generated pattern based on a seed to a block of memory.
 mem_status write_pattern(uint32_t *loc, size_t length, int8_t seed);
 
 #endif
