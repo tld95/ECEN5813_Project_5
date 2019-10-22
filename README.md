@@ -1,6 +1,6 @@
 # ECEN5813 Project 3 Readme
 # Tristan Duenas
-# Project Demonstration Youtube Video Link https://youtu.be/nHP0Cdw7QX0
+# Project Demonstration YouTube Video Link https://youtu.be/nHP0Cdw7QX0
 
 This repository contains the source/include files, makefile, linker file, UML Activity Diagram, and UML Sequence Diagram for ECEN5813 Project 3.
 The project is based on the initial project generated for the MKL25Z128xxx4.
