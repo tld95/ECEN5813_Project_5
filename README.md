@@ -44,7 +44,7 @@ One of the difficulties I faced with using the TCS3472 sensor was that the I2C l
 POST test on the TCS3472 sensor runs successfully but a few timeouts occur first due to the line being busy when it shouldn't be.
 I also noticed that when sending the address to the TCS3472 in its 7 bit write format instead of 8 bit format, the IAAS bit was set more consistently than the RXACK bit when transmitting. I'm not sure why that is.
 
-# Installation/execution notes
+# Installation/Execution Notes
 I used the auto-generated makefile for this project.
 Building requires performing a clean, then rebuild.
 Building for the TEST build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the TEST_FLAG
