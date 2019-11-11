@@ -4,14 +4,14 @@
 
 # Bruce Montgomery has approved late submission of Project 4 without any grade penalty due to distance learning resource limitations.
 
-# Repo Contents
-The source folder of the ECEN5813_Project_4 repository contains all of the files created by hand for this project.
 # Due to distance learning resource limitations Bruce Montgomery has excluded me from having to provide an Oscilloscope trace of I2C traffic between KL25Z and TMP102 sensor.
 # # The TCS3472 Color Light-To-Digital Converter with IR Filter was used in place of the Temp102 Temperature Sensor due to issues with connectivity to board.
 # Due to distance learning resource limitations Bruce Montgomery has excluded me from having to use the Temp102 sensor, and I have used the TCS3472 Color Sensor in its place (https://cdn-shop.adafruit.com/datasheets/TCS34725.pdf).
 # As a result I was also excluded from having to complete the alert functionality that was required of the Temp102 sensor.
 
 # Project Files
+The source folder of the ECEN5813_Project_4 repository contains all of the files created by hand for this project.
+
 color_sensor.c/.h: Defines color_sensor_init for TCS3472 I2C initialization, color_sensor_POST_Test for performing a POST test on the color sensor by checking that the device ID is 0x44, getColorSensorRegisterValue for requesting a register value such as color from the color sensor.
 
 i2c_control.c/.h: Defines i2c_wait that waits until either the I2C1 Status register is in a successful state after being masked/shifted or if a timeout of 50 mSec occurs. For instance, flags such as I2C_S_BUSY, I2C_IICIF, I2C_RXAK, and I2C_S_IAAS are checked. Also defines i2c_transmit for transmitting data from the master to the slave device. 
@@ -45,7 +45,7 @@ One of the difficulties I faced with using the TCS3472 sensor was that the I2C l
 POST test on the TCS3472 sensor runs successfully but a few timeouts occur first due to the line being busy when it shouldn't be.
 I also noticed that when sending the address to the TCS3472 in its 7 bit write format instead of 8 bit format, the IAAS bit was set more consistently than the RXACK bit when transmitting. I'm not sure why that is.
 
-#Installation/execution notes
+# Installation/execution notes
 I used the auto-generated makefile for this project.
 Building requires performing a clean, then rebuild.
 Building for the TEST build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the TEST_FLAG
