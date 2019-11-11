@@ -4,3 +4,6 @@
 /source/
 /startup/
 /utilities/
+/makefile
+/objects.mk
+/sources.mk
