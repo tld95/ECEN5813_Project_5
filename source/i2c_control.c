@@ -2,6 +2,8 @@
  * PES Project Four I2C Control polling implementation source code implementation
  * Tristan Duenas
  * References:
+ * Referenced flow of transmit operation from PES CU Fall 2019 Slack provided by Sorabh Gandhi
+ *
  */
 
 #include "i2c_control.h"
@@ -34,6 +36,7 @@ status i2c_wait(uint8_t mask, uint8_t shift, uint8_t state)
 
 status i2c_transmit(uint8_t data, uint8_t start, uint8_t restart)
 {
+	// Referenced flow of transmit operation from PES CU Fall 2019 Slack provided by Sorabh Gandhi
 	if (start == 1)
 	{
 		// Make sure line isn't busy

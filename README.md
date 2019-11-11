@@ -1,119 +1,55 @@
-# ECEN5813 Project 3 Readme
+# ECEN5813 Project 4 Readme
 # Tristan Duenas
-# Project Demonstration YouTube Video Link https://youtu.be/nHP0Cdw7QX0
+# Project Demonstration YouTube Video Link 
 
-This repository contains the source/include files, makefile, linker file, UML Activity Diagram (ECEN5813_UML_Activity_Diagram_Project_3.pdf), and UML Sequence Diagram (ECEN5813_UML_Sequence_Diagram_Project_3.pdf) for ECEN5813 Project 3.
-The project is based on the initial project generated for the MKL25Z128xxx4.
-I implemented main.c, allocate_words.c/.h, display_memory.c/.h, free_words.c/.h, gen_pattern.c/.h, get_address.c/.h, invert_block.c/.h, led_control.c/.h,
-logger.c/.h, timing_control.c/.h, verify_pattern.c/.h, write_pattern.c/.h, and mem_status.h
-which are located in the source folder.
-The main.c module contains the full execution sequence of the memory tests.
-The allocate_words.c module contains the functionality for allocating dynamic memory on the heap. I use malloc for both the PC/Board versions.
-The display_memory.c module contains the functionality for copying a piece of memory from a block of memory, and will display the copied memory in
-log enabled mode.
-The free_words.c module frees dynamically allocated memory from the heap using the free function. I use free for both the PC/Board versions.
-The gen_pattern.c module takes a seed and XORs each byte memory block provided with that seed to create a deterministic pseudo random pattern.
-The get_address.c module takes a base address and offset, and returns a new address with the combined base address and offset.
-The invert_block.c module takes a block of memory and inverts a designated amount of bytes by XORing with 0xFF.
-The led_control.c module provides the functionality of commanding the board's LED to GREEN, RED, BLUE, or OFF.
-the logger.c module provides the functionality of logging blocks of memory/messages.
-The timing_control.c module provides the ability to delay through waiting clock cycles between test runs, to allow the LED/log 
-prints to be visible.
-The verify_pattern.c module generates a pattern based on a seed, and verifies it matches a block of memory. The pattern generated to verify 
-is output when logging is enabled. If the verification fails, the addresses and values at those addresses will be logged as well.
-The write_pattern.c module writes a generated pattern based on a seed to a block of memory.
-The mem_status.h header includes the enum definition for the mem_status return type.
-I wrote the makefile by hand. The makefile has the ability to build 4 different targets.
-I had difficulty with doing the bound checks.
-fb_run (LED enabled and logging disabled), fb_debug (LED and logging enabled), pc_run (LED and logging disabled), and pc_debug (LED disabled and logging enabled).
-Depending on the target built, different sections of the source files I implemented will be used.
-- The fb_run (LED enabled and logging disabled) target builds with the FB_RUN build flag.
-- The fb_debug (LED and logging enabled) target builds with the FB_DEBUG build flag.
-- The pc_run (LED and logging disabled) target builds with the PC_RUN build flag. Nothing really outputs for this one, but the test runs in the background.
-- The pc_debug (LED disabled and logging enabled) target builds with the PC_DEBUG build flag.
+# Bruce Montgomery has approved late submission of Project 4 without any grade penalty due to distance learning resource limitations.
 
-# All build targets will generate their final .AXF /.exe file in the debug folder in ECEN5813_Project_3
+# Repo Contents
+The source folder of the ECEN5813_Project_4 repository contains all of the files created by hand for this project.
+# Due to distance learning resource limitations Bruce Montgomery has excluded me from having to provide an Oscilloscope trace of I2C traffic between KL25Z and TMP102 sensor.
+# # The TCS3472 Color Light-To-Digital Converter with IR Filter was used in place of the Temp102 Temperature Sensor due to issues with connectivity to board.
+# Due to distance learning resource limitations Bruce Montgomery has excluded me from having to use the Temp102 sensor, and I have used the TCS3472 Color Sensor in its place (https://cdn-shop.adafruit.com/datasheets/TCS34725.pdf).
+# As a result I was also excluded from having to complete the alert functionality that was required of the Temp102 sensor.
 
-Building the fb_run target requires the following steps:
+# Project Files
+color_sensor.c/.h: Defines color_sensor_init for TCS3472 I2C initialization, color_sensor_POST_Test for performing a POST test on the color sensor by checking that the device ID is 0x44, getColorSensorRegisterValue for requesting a register value such as color from the color sensor.
 
-- Right click on ECEN5813_Project_3 and click Clean Project
-- Right click on ECEN5813_Project_3 and go to properties
-- In properties navigate to the C/C++ Build tab
-- Under Builder Settings, Builder, uncheck Use Default Build Command
-- In the Build Command option use "make fb_run -j12"
-- Under Builder Settings, Makefile generation uncheck Generate Makefile Automatically
-- Under Builder Settings, Build location, Build directory enter ECEN5813_Project_3 workspace path
-- My current path for my PC is C:\Users\trist\Documents\MCUXpressoIDE_11.0.1_2563\workspace\ECEN5813_Project_3, as an example
-- Click Apply, and Apply and Close buttons on Builder Settings Tab
-- Right click on ECEN5813_Project_3 and click Build Project
-- Verify in Console perspective, the fb_run target build completed successfully
-- ECEN5813_Project_3.axf for fb_run target can be found in debug\ECEN5813_Project_3.axf
+i2c_control.c/.h: Defines i2c_wait that waits until either the I2C1 Status register is in a successful state after being masked/shifted or if a timeout of 50 mSec occurs. For instance, flags such as I2C_S_BUSY, I2C_IICIF, I2C_RXAK, and I2C_S_IAAS are checked. Also defines i2c_transmit for transmitting data from the master to the slave device. 
+The process for transmitting data is make sure line isn't busy, switch to transmit mode, set start bit if start is specified, set restart bit if specified, set data register, wait for IICIF bit to be true, clear IICIF bit, make sure arbitration bit isn't set, wait for acknowledgemnt from slave device or for the slave device to be in IAAS mode.
+I noticed when IAAS is true there are cases where the RXAK is not true.
 
-Running the fb_run target requires the following steps:
+state_machines.c/.h: Defines run_state_machines, run_state_machine_one, and run_state_machine_two. The run_state_machine_one function performs a red color reading of the color sensor red color register, over 4 iterations, averaging the red color read in on each iteration. 
+If the I2C read from the color sensor times out while waiting or fails, the state machine jumps to the disconnected state. Once 4 successful color sensor readings occur, state machine two will be jumped two where it will perform the same functionality. Once state machine two
+completes 4 successful color sensor readings then the state machine completed state is jumped to and the state machines will stop running. The run_state_machines function runs state machine one and state machine two.
 
-- Create run/debug configuration for loading debug\ECEN5813_Project_3.axf, and run/debug on board.
+logger.c/.h: Includes logger functionality from project 3, with the extended functionality required of project 4. 
+The function enum list has been defined in functions_enum_list.c/.h. The functions enum has been used to provide a string with a function name when 
+a function logs a message. Build flags TEST_FLAG, DEBUG_FLAG, and STATUS_FLAG are used in logger.c to determine when to log a message.
 
-Building the fb_debug target requires the following steps:
+functions_enum_list.c/.h: Defines an enum list of all of the functions I've defined in project 4, as well as a function to lookup a functions name string based on its enum.
 
-- Right click on ECEN5813_Project_3 and click Clean Project
-- Right click on ECEN5813_Project_3 and go to properties
-- In properties navigate to the C/C++ Build tab
-- Under Builder Settings, Builder, uncheck Use Default Build Command
-- In the Build Command option use "make fb_debug -j12"
-- Under Builder Settings, Makefile generation uncheck Generate Makefile Automatically
-- Under Builder Settings, Build location, Build directory enter ECEN5813_Project_3 workspace path
-- My current path for my PC is C:\Users\trist\Documents\MCUXpressoIDE_11.0.1_2563\workspace\ECEN5813_Project_3, as an example
-- Click Apply, and Apply and Close buttons on Builder Settings Tab
-- Right click on ECEN5813_Project_3 and click Build Project
-- Verify in Console perspective, the fb_run target build completed successfully
-- ECEN5813_Project_3.axf for fb_debug target can be found in debug\ECEN5813_Project_3.axf
+led_control.c/.h: Defines LED control functionality, same as what was defined in previous projects.
 
-Running the fb_debug target requires the following steps:
+timing_control.c/.h: Defines ability to delay clock cycles, same as what was defined in previous projects.
 
-- Create run/debug configuration for loading debug\ECEN5813_Project_3.axf, and run/debug on board.
-- Observe terminal serial port for outputs.
+main.c: Runs Project 4 uCUnit tests, TCS3472 Color Sensor POST test, and runs TCS3472 Color sensor state machines.
 
-Building the pc_run target requires the following steps:
+project_4_tests.c/.h: Defines 10 uCUnit tests.
 
-- Right click on ECEN5813_Project_3 and click Clean Project
-- Right click on ECEN5813_Project_3 and go to properties
-- In properties navigate to the C/C++ Build tab
-- Under Builder Settings, Builder, uncheck Use Default Build Command
-- In the Build Command option use "make pc_run -j12"
-- Under Builder Settings, Makefile generation uncheck Generate Makefile Automatically
-- Under Builder Settings, Build location, Build directory enter ECEN5813_Project_3 workspace path
-- My current path for my PC is C:\Users\trist\Documents\MCUXpressoIDE_11.0.1_2563\workspace\ECEN5813_Project_3, as an example
-- Click Apply Builder Settings Tab
-- Under C/C++ Build, Enviornment, select Variable PATH and edit
-- Append path to gcc compiler. I am using the path C:\MinGW\bin since I'm running gcc on Windows.
-- In the Enviornment tab click Apply, and the Apply and Close
-- Right click on ECEN5813_Project_3 and click Build Project
-- Verify in Console perspective, the pc_run target build completed successfully
-- pc_run.exe for pc_run target can be found in debug\pc_run.exe
+# Observations
+Sensor connectivity and hardware debugging was a major issue for me as a distance learner. I don't have the lab resource that on-campus students do. I did not have a multi-meter or an oscilloscope. I was lucky enough to have a soldering iron. 
+I had to purchase the pin connectors online which took a few days to acquire. I have experience soldering which helped, but if I didn't this project would have been even more difficult.
+When using the Temp102 sensor I did not receive acknowledgement back. When testing the same code with my spare TCS3472 color sensor I did receive acknowledgements, which is why I used it instead to demonstrate my codes I2C capability.
+I discussed this with Bruce Montgomery.
+One of the difficulties I faced with using the TCS3472 sensor was that the I2C line would stay busy even when there wasn't any communication. This result in unexpected timeouts.
+POST test on the TCS3472 sensor runs successfully but a few timeouts occur first due to the line being busy when it shouldn't be.
+I also noticed that when sending the address to the TCS3472 in its 7 bit write format instead of 8 bit format, the IAAS bit was set more consistently than the RXACK bit when transmitting. I'm not sure why that is.
 
-Running the pc_run target requires the following steps:
+#Installation/execution notes
+I used the auto-generated makefile for this project.
+Building requires performing a clean, then rebuild.
+Building for the TEST build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the TEST_FLAG
+Building for the DEBUG build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the DEBUG_FLAG
+Building for the STATUS build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the STATUS_FLAG
+ECEN5813_Project_4.axf is stored in the Debug folder of the repository and can be run through the GDB PEMicro Interface Debugging Debug configurations using the axf file generated.
 
-- Create run C run configuration for debug\pc_run.exe and run locally in IDE. 
-- Observe Console for outputs.
-
-Building the pc_debug target requires the following steps:
-- Right click on ECEN5813_Project_3 and click Clean Project
-- Right click on ECEN5813_Project_3 and go to properties
-- In properties navigate to the C/C++ Build tab
-- Under Builder Settings, Builder, uncheck Use Default Build Command
-- In the Build Command option use "make pc_debug -j12"
-- Under Builder Settings, Makefile generation uncheck Generate Makefile Automatically
-- Under Builder Settings, Build location, Build directory enter ECEN5813_Project_3 workspace path
-- My current path for my PC is C:\Users\trist\Documents\MCUXpressoIDE_11.0.1_2563\workspace\ECEN5813_Project_3, as an example
-- Click Apply Builder Settings Tab
-- Under C/C++ Build, Enviornment, select Variable PATH and edit
-- Append path to gcc compiler. I am using the path C:\MinGW\bin since I'm running gcc on Windows.
-- In the Enviornment tab click Apply, and the Apply and Close
-- Right click on ECEN5813_Project_3 and click Build Project
-- Verify in Console perspective, the pc_debug target build completed successfully
-- pc_debug.exe for pc_debug target can be found in debug\pc_debug.exe
-
-Running the pc_debug target requires the following steps:
-
-- Create run C run configuration for debug\pc_debug.exe and run locally in IDE. 
-- Observe Console for outputs.

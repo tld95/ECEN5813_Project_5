@@ -65,8 +65,8 @@ void run_state_machine_one(state_machine_states* nextState)
 		{
 			Log_string(DEBUG_LEVEL, RUN_STATE_MACHINE_ONE, "Previous Red Value:");
 			Log_integer(DEBUG_LEVEL, RUN_STATE_MACHINE_ONE, previousValue);
-			Log_string(DEBUG_LEVEL, RUN_STATE_MACHINE_ONE, "Current Red Value");
-			Log_integer(DEBUG_LEVEL, RUN_STATE_MACHINE_ONE, value);
+			Log_string(STATUS_LEVEL, RUN_STATE_MACHINE_ONE, "Current Red Value");
+			Log_integer(STATUS_LEVEL, RUN_STATE_MACHINE_ONE, value);
 			Log_string(STATUS_LEVEL, RUN_STATE_MACHINE_ONE, "Average Red Value:");
 			Log_integer(STATUS_LEVEL, RUN_STATE_MACHINE_ONE, averageValue);
 		}
