@@ -45,6 +45,8 @@ POST test on the TCS3472 sensor runs successfully but a few timeouts occur first
 I also noticed that when sending the address to the TCS3472 in its 7 bit write format instead of 8 bit format, the IAAS bit was set more consistently than the RXACK bit when transmitting. I'm not sure why that is.
 
 # Installation/Execution Notes
+# There are warnings while building due to the inclusion of the uCUnit library. There are static variables defined that the compiler claims aren't being used even though they are.
+# The color sensor is wired ground to ground, Vin to 3v3 volts, SCL to SCL I2C1 PTE1, SDA to SDA I2C1 PTE0. 
 I used the auto-generated makefile for this project.
 Building requires performing a clean, then rebuild.
 Building for the TEST build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the TEST_FLAG

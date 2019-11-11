@@ -28,7 +28,7 @@ void run_state_machines()
 	switch(currentState)
 	{
 		case DISCONNECTED:
-			Log_string(STATUS_LEVEL, RUN_STATE_MACHINES, "Temp 102 Disconnected");
+			Log_string(STATUS_LEVEL, RUN_STATE_MACHINES, "Color sensor Disconnected");
 			break;
 		case COMPLETED:
 			Log_string(STATUS_LEVEL, RUN_STATE_MACHINES, "State Machine One and Two Completed");
