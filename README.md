@@ -5,9 +5,8 @@
 # Bruce Montgomery has approved late submission of Project 4 without any grade penalty due to distance learning resource limitations.
 
 # Due to distance learning resource limitations Bruce Montgomery has excluded me from having to provide an Oscilloscope trace of I2C traffic between KL25Z and TMP102 sensor.
-# # The TCS3472 Color Light-To-Digital Converter with IR Filter was used in place of the Temp102 Temperature Sensor due to issues with connectivity to board.
-# Due to distance learning resource limitations Bruce Montgomery has excluded me from having to use the Temp102 sensor, and I have used the TCS3472 Color Sensor in its place (https://cdn-shop.adafruit.com/datasheets/TCS34725.pdf).
-# As a result I was also excluded from having to complete the alert functionality that was required of the Temp102 sensor.
+# The TCS3472 Color Light-To-Digital Converter with IR Filter was used in place of the Temp102 Temperature Sensor due to issues with connectivity to board.
+# Due to distance learning resource limitations Bruce Montgomery has excluded me from having to use the Temp102 sensor, and I have used the TCS3472 Color Sensor in its place (https://cdn-shop.adafruit.com/datasheets/TCS34725.pdf). As a result I was also excluded from having to complete the alert functionality that was required of the Temp102 sensor.
 
 # Project Files
 The source folder of the ECEN5813_Project_4 repository contains all of the files created by hand for this project.
