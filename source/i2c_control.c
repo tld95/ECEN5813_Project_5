@@ -8,9 +8,9 @@
 
 status i2c_wait(uint8_t mask, uint8_t shift, uint8_t state)
 {
-	// Timeout after 10ms
+	// Timeout after 50ms
 	uint32_t cyclesPerMsec = oscConfig_BOARD_BootClockRUN.freq / MILLI_SEC_IN_SEC;
-	uint32_t delayCycles = 10 * cyclesPerMsec;
+	uint32_t delayCycles = 50 * cyclesPerMsec;
 	uint32_t count = 0;
 	uint8_t goodState = (((I2C1->S & mask) >> shift) == state);
 	while((goodState == 0) && count < delayCycles)
@@ -24,7 +24,6 @@ status i2c_wait(uint8_t mask, uint8_t shift, uint8_t state)
 	}
 	else
 	{
-		Log_string("Wait timed out");
 		return FAILED;
 	}
 }
@@ -37,6 +36,9 @@ status i2c_transmit(uint8_t data, uint8_t start, uint8_t restart)
 		if (i2c_wait(I2C_S_BUSY_MASK, I2C_S_BUSY_SHIFT, 0) == FAILED)
 		{
 			I2C_M_STOP;
+			delay(50);
+			I2C1->S = 0xFF;
+			delay(50);
 			return FAILED;
 		}
 		I2C_TRAN;
@@ -50,6 +52,7 @@ status i2c_transmit(uint8_t data, uint8_t start, uint8_t restart)
 	I2C1->D = data;
 	if (i2c_wait(I2C_S_IICIF_MASK, I2C_S_IICIF_SHIFT, 1) == FAILED)
 	{
+		I2C1->S = 0xFF;
 		I2C_M_STOP;
 		return FAILED;
 	}
@@ -71,6 +74,7 @@ status i2c_transmit(uint8_t data, uint8_t start, uint8_t restart)
 		if ((i2c_wait(I2C_S_RXAK_MASK, I2C_S_RXAK_SHIFT, 1) == FAILED)
 				&& (i2c_wait(I2C_S_IAAS_MASK, I2C_S_IAAS_SHIFT, 1) == FAILED))
 		{
+			I2C1->S = 0xFF;
 			I2C_M_STOP;
 			return FAILED;
 		}

@@ -44,34 +44,33 @@ void run_state_machine_one(state_machine_states* nextState)
 	Log_string("Starting State Machine One.");
 	uint32_t timeoutCount = 0;
 	uint32_t valuesAveraged = 1;
-	uint32_t averageTemp = 0;
-	uint32_t previousTemp = 0;
-	uint32_t totalTempAdded = 0;
+	uint32_t averageValue = 0;
+	uint32_t previousValue = 0;
+	uint32_t totalValuesAdded = 0;
 	status tempStatus = PASSED;
 	while ((tempStatus == PASSED) && (timeoutCount < 4))
 	{
-		uint8_t temp = 0;
-		temp = getRegValue(&tempStatus, 0x16);
-		totalTempAdded += temp;
-		averageTemp = totalTempAdded / valuesAveraged;
+		uint8_t value = 0;
+		value = getRegValue(&tempStatus, RED_REGISTER_LOW);
+		totalValuesAdded += value;
+		averageValue = totalValuesAdded / valuesAveraged;
 		valuesAveraged++;
 		// Temp 102 Disconnected or Temp Alert
-		if ((tempStatus == FAILED) || temp < 0)
+		if ((tempStatus == FAILED) || value < 0)
 		{
 			*nextState = DISCONNECTED;
 		}
 		else
 		{
-			Log_string("Previous Temp:");
-			Log_integer(previousTemp);
-			Log_string("Current Temp");
-			Log_integer(temp);
-			Log_string("Average Temp:");
-			Log_integer(averageTemp);
+			Log_string("Previous Red Value:");
+			Log_integer(previousValue);
+			Log_string("Current Red Value");
+			Log_integer(value);
+			Log_string("Average Red Value:");
+			Log_integer(averageValue);
 		}
-		delay(1000);
 		timeoutCount++;
-		previousTemp = temp;
+		previousValue = value;
 	}
 	if (tempStatus == PASSED)
 	{
@@ -84,34 +83,33 @@ void run_state_machine_two(state_machine_states* nextState)
 	Log_string("Starting State Machine Two.");
 	uint32_t timeoutCount = 0;
 	uint32_t valuesAveraged = 1;
-	uint32_t averageTemp = 0;
-	uint32_t previousTemp = 0;
-	uint32_t totalTempAdded = 0;
+	uint32_t averageValue = 0;
+	uint32_t previousValue = 0;
+	uint32_t totalValuesAdded = 0;
 	status tempStatus = PASSED;
 	while ((tempStatus == PASSED) && (timeoutCount < 4))
 	{
-		uint8_t temp = 0;
-		temp = getRegValue(&tempStatus, 0x16);
-		totalTempAdded += temp;
-		averageTemp = totalTempAdded / valuesAveraged;
+		uint8_t value = 0;
+		value = getRegValue(&tempStatus, RED_REGISTER_LOW);
+		totalValuesAdded += value;
+		averageValue = totalValuesAdded / valuesAveraged;
 		valuesAveraged++;
 		// Temp 102 Disconnected or Temp Alert
-		if ((tempStatus == FAILED) || (temp < 0))
+		if ((tempStatus == FAILED) || value < 0)
 		{
 			*nextState = DISCONNECTED;
 		}
 		else
 		{
-			Log_string("Previous Temp:");
-			Log_integer(previousTemp);
-			Log_string("Current Temp");
-			Log_integer(temp);
-			Log_string("Average Temp:");
-			Log_integer(averageTemp);
+			Log_string("Previous Red Value:");
+			Log_integer(previousValue);
+			Log_string("Current Red Value");
+			Log_integer(value);
+			Log_string("Average Red Value:");
+			Log_integer(averageValue);
 		}
-		delay(1000);
 		timeoutCount++;
-		previousTemp = temp;
+		previousValue = value;
 	}
 	if (tempStatus == PASSED)
 	{

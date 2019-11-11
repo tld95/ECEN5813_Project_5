@@ -86,27 +86,27 @@ int main(void) {
 
     Log_enable();
 
-	color_sensor_init(0x29);
-	status tempStatus;
+	color_sensor_init();
+	uint8_t postTestPassed = 0;
     while (true)
     {
-//		status tempStatus = color_sensor_POST_Test((0x14 | 0x80));
-//		if (tempStatus == FAILED)
-//		{
-//			Log_string("POST Test Failed.");
-//		}
-//		else
-//		{
-//			Log_string("POST Test Passed.");
-//
-//			getRegValue(&tempStatus, 0x12 | 0x80);
-//
-////			getRegValue(&tempStatus, RED_REGISTER_LOW);
-////			getRegValue(&tempStatus, RED_REGISTER_HIGH);
-//
-//			//			run_state_machines();
-//		}
-    	getRegValue(&tempStatus, 0x12 | 0x80);
+		if (postTestPassed == 0)
+		{
+			status sensorStatus = color_sensor_POST_Test();
+			if (sensorStatus == FAILED)
+			{
+				Log_string("POST Test Failed.");
+			}
+			else
+			{
+				Log_string("POST Test Passed.");
+				postTestPassed = 1;
+			}
+		}
+		else
+		{
+			run_state_machines();
+		}
 		delay(100);
     }
     return 0 ;

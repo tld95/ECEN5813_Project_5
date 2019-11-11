@@ -12,8 +12,11 @@
 #include "i2c_control.h"
 #include "timing_control.h"
 
-#define CLEAR_ADC_LOW (0x14 | 0x80)
-#define CLEAR_ADC_HIGH (0x15 | 0x80)
+#define DEVICE_ID (0x44)
+#define DEVICE_ADDR (0x29)
+#define WRITE_ADDR (0x52)
+#define READ_ADDR (0x53)
+#define DEVICE_ID_REGISTER (0x12 | 0x80)
 #define RED_REGISTER_LOW (0x16 | 0x80)
 #define RED_REGISTER_HIGH (0x17 | 0x80)
 #define GREEN_REGISTER_LOW (0x18 | 0x80)
@@ -21,8 +24,8 @@
 #define BLUE_REGISTER_LOW (0x1A | 0x80)
 #define BLUE_REGISTER_HIGH (0x1B | 0x80)
 
-void color_sensor_init(uint8_t addr);
-status color_sensor_POST_Test(uint8_t reg);
+void color_sensor_init();
+status color_sensor_POST_Test();
 uint8_t getRegValue(status* tempStatus, uint8_t reg);
 
 #endif

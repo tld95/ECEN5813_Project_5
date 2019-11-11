@@ -12,6 +12,7 @@
 #include "clock_config.h"
 #include "MKL25Z4.h"
 #include "logger.h"
+#include "timing_control.h"
 
 // Referencing PES I2C Polling Dean File
 #define I2C_M_START I2C1->C1 |= I2C_C1_MST_MASK
