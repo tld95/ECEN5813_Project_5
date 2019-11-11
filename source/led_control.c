@@ -11,34 +11,31 @@
 void led_control(ledStates commandedLED_State)
 {
 #if defined(FB_RUN) || defined(FB_DEBUG)
-	if (Log_status() == ENABLED)
+	switch (commandedLED_State)
 	{
-		switch (commandedLED_State)
-		{
-			case RED:
-				LED_GREEN_OFF();
-				LED_BLUE_OFF();
-				LED_RED_ON();
-				break;
-			case GREEN:
-				LED_RED_OFF();
-				LED_BLUE_OFF();
-				LED_GREEN_ON();
-				break;
-			case BLUE:
-				LED_RED_OFF();
-				LED_GREEN_OFF();
-				LED_BLUE_ON();
-				break;
-			case OFF:
-				LED_RED_OFF();
-				LED_GREEN_OFF();
-				LED_BLUE_OFF();
-				break;
-			default:
-				// Do nothing
-				break;
-		}
+		case RED:
+			LED_GREEN_OFF();
+			LED_BLUE_OFF();
+			LED_RED_ON();
+			break;
+		case GREEN:
+			LED_RED_OFF();
+			LED_BLUE_OFF();
+			LED_GREEN_ON();
+			break;
+		case BLUE:
+			LED_RED_OFF();
+			LED_GREEN_OFF();
+			LED_BLUE_ON();
+			break;
+		case OFF:
+			LED_RED_OFF();
+			LED_GREEN_OFF();
+			LED_BLUE_OFF();
+			break;
+		default:
+			// Do nothing
+			break;
 	}
 #endif
 }

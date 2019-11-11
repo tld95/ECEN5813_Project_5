@@ -29,10 +29,10 @@
  */
  
 /*
- * PES Project Three main source code implementation
+ * PES Project Four main source code implementation
  * Tristan Duenas
  * References:
- * PES Project 3 (1.5)
+ * PES Project 4
  */
 
 /*
@@ -43,23 +43,17 @@
  * PC_DEBUG For running on local PC without LED output with console output (with time stamps)
  */
 
+#include <color_sensor_control.h>
 #include <stddef.h>
 
-// Project 3 C modules
-#include "allocate_words.h"
-#include "free_words.h"
-#include "display_memory.h"
-#include "write_memory.h"
-#include "invert_block.h"
-#include "write_pattern.h"
-#include "verify_pattern.h"
-#include "get_address.h"
+// Project 4 C modules
 #include "logger.h"
 #include "led_control.h"
 #include "timing_control.h"
+#include "i2c_control.h"
+#include "state_machines.h"
 
 // KL25Z hardware includes/defines
-#if defined(FB_RUN) || defined(FB_DEBUG)
 #include "board.h"
 #include "peripherals.h"
 #include "pin_mux.h"
@@ -67,23 +61,16 @@
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
 
+
 #define LED3_PORT GPIOD
 #define LED3_PIN 1U
-#endif
 
-#define TWO_MS 2000
-#define ONE 1
-#define SIXTEEN 16
-#define FOUR_BYTES 4
-#define SIXTEEN_BYTES 16
-#define SIXTY_FOUR_BYTES 64
-#define SEED 255
-
-void setLED_RedOnError(mem_status state);
+void i2c_init();
+void i2c_write_byte(uint8_t dev, uint8_t reg, uint8_t data);
+uint8_t i2c_read_byte(uint8_t dev, uint8_t reg);
 
 int main(void) {
 
-#if defined(FB_RUN) || defined(FB_DEBUG)
   	/* Init board hardware. */
     BOARD_InitBootPins();
     BOARD_InitBootClocks();
@@ -94,128 +81,33 @@ int main(void) {
     LED_RED_INIT(1);
     LED_GREEN_INIT(1);
     LED_BLUE_INIT(1);
-#endif
 
-	Log_enable();
-	Log_string("Program Started.");
-	Log_string("");
-	led_control(OFF);
-	delay(TWO_MS);
+    led_control(OFF);
 
-	uint32_t* memory_block = NULL;
-	uint8_t* bytePointer = NULL;
-	uint32_t* miscompareListPointer = NULL;
-	uint32_t* offsetAddress = NULL;
-	mem_status status = SUCCESS;
-	mem_status tempStatus = SUCCESS;
+    Log_enable();
 
-	// Referenced comments from PES Project 3 (1.5)
-
-	// Allocate 16 bytes
-	led_control(BLUE);
-	memory_block = allocate_words(SIXTEEN_BYTES);
-	Log_string("");
-	delay(TWO_MS);
-
-	// Write a memory pattern to the allocated 16 byte region using a selected seed
-	status |= write_pattern(memory_block, SIXTEEN_BYTES, SEED);
-	setLED_RedOnError(status);
-	// Display that region’s memory pattern
-	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	// Verify that region’s memory pattern (should pass)
-	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	free_words((uint32_t*)bytePointer);
-	free_words(miscompareListPointer);
-	Log_string("");
-	delay(TWO_MS);
-
-	//Write 0xFFEE to a position within that region (location + some offset you select)
-	uint16_t value = 0xFFEE;
-	offsetAddress = get_address(memory_block, ONE);
-	status |= write_memory_16_bit_value(offsetAddress, value);
-	// Display that region’s memory pattern
-	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	// Verify the memory pattern again (should error)
-	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	free_words((uint32_t*)bytePointer);
-	free_words(miscompareListPointer);
-	Log_string("");
-	delay(TWO_MS);
-
-	// Write a memory pattern to the region using the same seed as before
-	status |= write_pattern(memory_block, SIXTEEN_BYTES, SEED);
-	setLED_RedOnError(status);
-	// Display that region’s memory pattern
-	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	// Verify that memory pattern again (should pass)
-	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	free_words((uint32_t*)bytePointer);
-	free_words(miscompareListPointer);
-	Log_string("");
-	delay(TWO_MS);
-
-	// Invert 4 bytes in the region (location + some offset)
-	offsetAddress = get_address(memory_block, ONE);
-	status |= invert_block(offsetAddress, FOUR_BYTES);
-	setLED_RedOnError(status);
-	// Display that region’s memory pattern
-	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	// Verify the memory pattern again (should error)
-	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	free_words((uint32_t*)bytePointer);
-	free_words(miscompareListPointer);
-	Log_string("");
-	delay(TWO_MS);
-
-	// Invert those 4 bytes again in the LMA region (location + some offset)
-	offsetAddress = get_address(memory_block, ONE);
-	status |= invert_block(offsetAddress, FOUR_BYTES);
-	setLED_RedOnError(status);
-	// Display that region’s memory pattern
-	bytePointer = display_memory(memory_block, SIXTEEN_BYTES, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	// Verify that memory pattern again (should pass)
-	miscompareListPointer = verify_pattern(memory_block, SIXTEEN_BYTES, SEED, &tempStatus);
-	status |= tempStatus;
-	setLED_RedOnError(status);
-	free_words((uint32_t*)bytePointer);
-	free_words(miscompareListPointer);
-	Log_string("");
-	delay(TWO_MS);
-
-	if (status == SUCCESS)
-	{
-		led_control(GREEN);
-	}
-
-	// Free the 16 byte allocated region (if necessary on your target)
-	free_words(memory_block);
-	Log_string("Program Ended.");
-	Log_disable();
+	color_sensor_init(0x29);
+	status tempStatus;
+    while (true)
+    {
+//		status tempStatus = color_sensor_POST_Test((0x14 | 0x80));
+//		if (tempStatus == FAILED)
+//		{
+//			Log_string("POST Test Failed.");
+//		}
+//		else
+//		{
+//			Log_string("POST Test Passed.");
+//
+//			getRegValue(&tempStatus, 0x12 | 0x80);
+//
+////			getRegValue(&tempStatus, RED_REGISTER_LOW);
+////			getRegValue(&tempStatus, RED_REGISTER_HIGH);
+//
+//			//			run_state_machines();
+//		}
+    	getRegValue(&tempStatus, 0x12 | 0x80);
+		delay(100);
+    }
     return 0 ;
-}
-
-void setLED_RedOnError(mem_status state)
-{
-	if (state == FAILED)
-	{
-		led_control(RED);
-	}
 }

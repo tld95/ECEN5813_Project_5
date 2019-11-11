@@ -71,7 +71,7 @@ void Log_string(char *string)
 	if (Log_status() == ENABLED)
 	{
 		#ifdef FB_DEBUG
-			PRINTF("%s\n", string);
+			PRINTF("%s\r\n", string);
 		#endif
 		#ifdef PC_DEBUG
 			printf("%s\n", string);
@@ -85,7 +85,7 @@ void Log_integer(size_t integer)
 	if (Log_status() == ENABLED)
 	{
 		#ifdef FB_DEBUG
-			PRINTF("%d\n", integer);
+			PRINTF("%d\r\n", integer);
 		#endif
 		#ifdef PC_DEBUG
 			printf("%d\n", integer);
