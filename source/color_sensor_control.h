@@ -11,6 +11,7 @@
 #include "MKL25Z4.h"
 #include "i2c_control.h"
 #include "timing_control.h"
+#include "led_control.h"
 
 #define DEVICE_ID (0x44)
 #define DEVICE_ADDR (0x29)
@@ -26,6 +27,6 @@
 
 void color_sensor_init();
 status color_sensor_POST_Test();
-uint8_t getRegValue(status* tempStatus, uint8_t reg);
+uint8_t getColorSensorRegisterValue(status* deviceStatus, uint8_t reg);
 
 #endif

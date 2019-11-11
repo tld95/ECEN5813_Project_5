@@ -28,10 +28,10 @@ void run_state_machines()
 	switch(currentState)
 	{
 		case DISCONNECTED:
-			Log_string("Temp 102 Disconnected");
+			Log_string(STATUS_LEVEL, RUN_STATE_MACHINES, "Temp 102 Disconnected");
 			break;
 		case COMPLETED:
-			Log_string("State Machine One and Two Completed");
+			Log_string(STATUS_LEVEL, RUN_STATE_MACHINES, "State Machine One and Two Completed");
 			break;
 		default:
 			// Do nothing
@@ -41,7 +41,7 @@ void run_state_machines()
 
 void run_state_machine_one(state_machine_states* nextState)
 {
-	Log_string("Starting State Machine One.");
+	Log_string(STATUS_LEVEL, RUN_STATE_MACHINE_ONE, "Starting State Machine One.");
 	uint32_t timeoutCount = 0;
 	uint32_t valuesAveraged = 1;
 	uint32_t averageValue = 0;
@@ -51,23 +51,24 @@ void run_state_machine_one(state_machine_states* nextState)
 	while ((tempStatus == PASSED) && (timeoutCount < 4))
 	{
 		uint8_t value = 0;
-		value = getRegValue(&tempStatus, RED_REGISTER_LOW);
+		value = getColorSensorRegisterValue(&tempStatus, RED_REGISTER_LOW);
 		totalValuesAdded += value;
 		averageValue = totalValuesAdded / valuesAveraged;
 		valuesAveraged++;
 		// Temp 102 Disconnected or Temp Alert
 		if ((tempStatus == FAILED) || value < 0)
 		{
+			led_control(RED);
 			*nextState = DISCONNECTED;
 		}
 		else
 		{
-			Log_string("Previous Red Value:");
-			Log_integer(previousValue);
-			Log_string("Current Red Value");
-			Log_integer(value);
-			Log_string("Average Red Value:");
-			Log_integer(averageValue);
+			Log_string(DEBUG_LEVEL, RUN_STATE_MACHINE_ONE, "Previous Red Value:");
+			Log_integer(DEBUG_LEVEL, RUN_STATE_MACHINE_ONE, previousValue);
+			Log_string(DEBUG_LEVEL, RUN_STATE_MACHINE_ONE, "Current Red Value");
+			Log_integer(DEBUG_LEVEL, RUN_STATE_MACHINE_ONE, value);
+			Log_string(STATUS_LEVEL, RUN_STATE_MACHINE_ONE, "Average Red Value:");
+			Log_integer(STATUS_LEVEL, RUN_STATE_MACHINE_ONE, averageValue);
 		}
 		timeoutCount++;
 		previousValue = value;
@@ -80,7 +81,7 @@ void run_state_machine_one(state_machine_states* nextState)
 
 void run_state_machine_two(state_machine_states* nextState)
 {
-	Log_string("Starting State Machine Two.");
+	Log_string(STATUS_LEVEL, RUN_STATE_MACHINE_TWO, "Starting State Machine Two.");
 	uint32_t timeoutCount = 0;
 	uint32_t valuesAveraged = 1;
 	uint32_t averageValue = 0;
@@ -90,7 +91,7 @@ void run_state_machine_two(state_machine_states* nextState)
 	while ((tempStatus == PASSED) && (timeoutCount < 4))
 	{
 		uint8_t value = 0;
-		value = getRegValue(&tempStatus, RED_REGISTER_LOW);
+		value = getColorSensorRegisterValue(&tempStatus, RED_REGISTER_LOW);
 		totalValuesAdded += value;
 		averageValue = totalValuesAdded / valuesAveraged;
 		valuesAveraged++;
@@ -101,12 +102,12 @@ void run_state_machine_two(state_machine_states* nextState)
 		}
 		else
 		{
-			Log_string("Previous Red Value:");
-			Log_integer(previousValue);
-			Log_string("Current Red Value");
-			Log_integer(value);
-			Log_string("Average Red Value:");
-			Log_integer(averageValue);
+			Log_string(DEBUG_LEVEL, RUN_STATE_MACHINE_TWO, "Previous Red Value:");
+			Log_integer(DEBUG_LEVEL, RUN_STATE_MACHINE_TWO, previousValue);
+			Log_string(STATUS_LEVEL, RUN_STATE_MACHINE_TWO, "Current Red Value");
+			Log_integer(STATUS_LEVEL, RUN_STATE_MACHINE_TWO, value);
+			Log_string(STATUS_LEVEL, RUN_STATE_MACHINE_TWO, "Average Red Value:");
+			Log_integer(STATUS_LEVEL, RUN_STATE_MACHINE_TWO, averageValue);
 		}
 		timeoutCount++;
 		previousValue = value;

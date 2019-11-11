@@ -1,5 +1,5 @@
 /*
- * PES Project Four I2C Control source code implementation
+ * PES Project Four I2C Control polling implementation source code implementation
  * Tristan Duenas
  * References:
  */
@@ -8,6 +8,8 @@
 
 status i2c_wait(uint8_t mask, uint8_t shift, uint8_t state)
 {
+	// LED Green when waiting
+	led_control(GREEN);
 	// Timeout after 50ms
 	uint32_t cyclesPerMsec = oscConfig_BOARD_BootClockRUN.freq / MILLI_SEC_IN_SEC;
 	uint32_t delayCycles = 50 * cyclesPerMsec;
@@ -20,10 +22,12 @@ status i2c_wait(uint8_t mask, uint8_t shift, uint8_t state)
 	}
 	if (count < delayCycles)
 	{
+		led_control(OFF);
 		return PASSED;
 	}
 	else
 	{
+		led_control(OFF);
 		return FAILED;
 	}
 }

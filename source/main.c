@@ -95,11 +95,12 @@ int main(void) {
 			status sensorStatus = color_sensor_POST_Test();
 			if (sensorStatus == FAILED)
 			{
-				Log_string("POST Test Failed.");
+				led_control(RED);
+				Log_string(STATUS_LEVEL, MAIN, "POST Test Failed.");
 			}
 			else
 			{
-				Log_string("POST Test Passed.");
+				Log_string(STATUS_LEVEL, MAIN, "POST Test Passed.");
 				postTestPassed = 1;
 			}
 		}

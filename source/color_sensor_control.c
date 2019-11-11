@@ -68,7 +68,7 @@ void color_sensor_init()
 status color_sensor_POST_Test()
 {
 	status tempStatus = PASSED;
-	uint8_t colorSensorID = getRegValue(&tempStatus, DEVICE_ID_REGISTER);
+	uint8_t colorSensorID = getColorSensorRegisterValue(&tempStatus, DEVICE_ID_REGISTER);
 	// Verify Device is connected by checking Device ID
 	// Referenced https://github.com/adafruit/Adafruit_TCS34725
 	if (colorSensorID == DEVICE_ID)
@@ -81,7 +81,7 @@ status color_sensor_POST_Test()
 	}
 }
 
-uint8_t getRegValue(status* tempStatus, uint8_t reg)
+uint8_t getColorSensorRegisterValue(status* deviceStatus, uint8_t reg)
 {
 	volatile uint8_t dummy = 0;
 	volatile uint8_t data = 0;
@@ -107,6 +107,7 @@ uint8_t getRegValue(status* tempStatus, uint8_t reg)
 			}
 			else
 			{
+				led_control(GREEN);
 				I2C_REC;
 				dummy = I2C1->D;
 				ACK;
@@ -114,22 +115,25 @@ uint8_t getRegValue(status* tempStatus, uint8_t reg)
 				data = I2C1->D;
 				ACK;
 				delay(10);
-				Log_string("Dummy Read:");
-				Log_integer(dummy);
-				Log_string("Data:");
-				Log_integer(data);
+				Log_string(DEBUG_LEVEL, GET_COLOR_SENSOR_REGISTER_VALUE, "Dummy Read:");
+				Log_integer(DEBUG_LEVEL, GET_COLOR_SENSOR_REGISTER_VALUE, dummy);
+				Log_string(DEBUG_LEVEL, GET_COLOR_SENSOR_REGISTER_VALUE, "Data:");
+				Log_integer(DEBUG_LEVEL, GET_COLOR_SENSOR_REGISTER_VALUE, data);
 				I2C_M_STOP;
+				delay(100);
+				led_control(OFF);
 			}
 		}
 	}
 
 	if (no_device == 1)
 	{
-		*tempStatus = FAILED;
+		led_control(RED);
+		*deviceStatus = FAILED;
 	}
 	else
 	{
-		*tempStatus = PASSED;
+		*deviceStatus = PASSED;
 	}
 	return data;
 }

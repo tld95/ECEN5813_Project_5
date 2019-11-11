@@ -12,16 +12,21 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-
-#if defined(FB_RUN) || defined(FB_DEBUG)
 #include "fsl_debug_console.h"
-#endif
+#include "functions_enum_list.h"
 
 typedef enum logStatus
 {
 	DISABLED = 0,
 	ENABLED = 1
 } logStatus;
+
+typedef enum logLevel
+{
+	TEST_LEVEL = 0,
+	DEBUG_LEVEL = 1,
+	STATUS_LEVEL = 2
+} logLevel;
 
 // Enables logging
 void Log_enable();
@@ -30,10 +35,10 @@ void Log_disable();
 // Returns current logging enabled/disabled status
 logStatus Log_status();
 // Logs a block of data from memory
-void Log_data(uint8_t *address, size_t length);
+void Log_data(logLevel level, Function_Names funcName, uint8_t *address, size_t length);
 // Logs a string
-void Log_string(char *string);
+void Log_string(logLevel level, Function_Names funcName, char *string);
 // Logs an integer
-void Log_integer(size_t integer);
+void Log_integer(logLevel level, Function_Names funcName, size_t integer);
 
 #endif

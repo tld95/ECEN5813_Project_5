@@ -1,5 +1,5 @@
 /*
- * PES Project Three display logger source code implementation
+ * PES Project Four display logger source code implementation
  * Tristan Duenas
  * References:
  * https://stackoverflow.com/questions/16370673/how-to-print-32-bit-value-complete
@@ -24,72 +24,117 @@ logStatus Log_status()
 	return logEnabled;
 }
 
-void Log_data(uint8_t *address, size_t length)
+void Log_data(logLevel level, Function_Names funcName, uint8_t *address, size_t length)
 {
 	if (Log_status() == ENABLED)
 	{
-		// Referenced https://stackoverflow.com/questions/16370673/how-to-print-32-bit-value-complete
-		#ifdef FB_DEBUG
-			PRINTF("Address: 0x%08X ", (uint32_t*)address);
-		#endif
-		#ifdef PC_DEBUG
-			printf("Address: 0x%08X ", (uint32_t*)address);
-			fflush(stdout);
-		#endif
+		if (level == TEST_LEVEL)
+		{
+#ifdef TEST_FLAG
+			PRINTF("Test:\r\n", level);
+#endif
+		}
+		else if (level == DEBUG_LEVEL)
+		{
+#ifdef DEBUG_FLAG
+			PRINTF("Debug:\r\n");
+#endif
+		}
+		else if (level == STATUS_LEVEL)
+		{
+#ifdef STATUS_FLAG
+			PRINTF("Status:\r\n");
+#endif
+		}
+		else
+		{
+			// Do nothing
+		}
 
-		#ifdef FB_DEBUG
-			PRINTF("Value: 0x");
-		#endif
-		#ifdef PC_DEBUG
-			printf("Value: 0x");
-			fflush(stdout);
-		#endif
+
+#ifdef DEBUG_FLAG
+		char nameString[MAX_NAME_LENGTH];
+		getFunctionName(funcName, nameString);
+		PRINTF("%s:\r\n", nameString);
+		// Referenced https://stackoverflow.com/questions/16370673/how-to-print-32-bit-value-complete
+		PRINTF("Address: 0x%08X ", (uint32_t*)address);
+		PRINTF("Value: 0x");
 
 		for (uint32_t index = 0; index < length; index++)
 		{
-			#ifdef FB_DEBUG
-				PRINTF("%02X", address[index]);
-			#endif
-			#ifdef PC_DEBUG
-				printf("%02X", address[index]);
-				fflush(stdout);
-			#endif
+			PRINTF("%02X", address[index]);
 		}
-
-		#ifdef FB_DEBUG
-			PRINTF("\n");
-		#endif
-		#ifdef PC_DEBUG
-			printf("\n");
-			fflush(stdout);
-		#endif
+		PRINTF("\r\n");
+#endif
 	}
 }
 
-void Log_string(char *string)
+void Log_string(logLevel level, Function_Names funcName, char *string)
 {
 	if (Log_status() == ENABLED)
 	{
-		#ifdef FB_DEBUG
-			PRINTF("%s\r\n", string);
-		#endif
-		#ifdef PC_DEBUG
-			printf("%s\n", string);
-			fflush(stdout);
-		#endif
+		if (level == TEST_LEVEL)
+		{
+#ifdef TEST_FLAG
+			char nameString[MAX_NAME_LENGTH];
+			getFunctionName(funcName, nameString);
+			PRINTF("Test: %s: %s\r\n", nameString, string);
+#endif
+		}
+		else if (level == DEBUG_LEVEL)
+		{
+#ifdef DEBUG_FLAG
+			char nameString[MAX_NAME_LENGTH];
+			getFunctionName(funcName, nameString);
+			PRINTF("Debug: %s: %s\r\n", nameString, string);
+#endif
+		}
+		else if (level == STATUS_LEVEL)
+		{
+#ifdef STATUS_FLAG
+			char nameString[MAX_NAME_LENGTH];
+			getFunctionName(funcName, nameString);
+			PRINTF("Status: %s: %s\r\n", nameString, string);
+#endif
+		}
+		else
+		{
+			// Do nothing
+		}
 	}
 }
 
-void Log_integer(size_t integer)
+void Log_integer(logLevel level, Function_Names funcName, size_t integer)
 {
 	if (Log_status() == ENABLED)
 	{
-		#ifdef FB_DEBUG
-			PRINTF("%d\r\n", integer);
-		#endif
-		#ifdef PC_DEBUG
-			printf("%d\n", integer);
-			fflush(stdout);
-		#endif
+		if (level == TEST_LEVEL)
+		{
+#ifdef TEST_FLAG
+			char nameString[MAX_NAME_LENGTH];
+			getFunctionName(funcName, nameString);
+			PRINTF("Test: %s: %d\r\n", nameString, integer);
+#endif
+		}
+		else if (level == DEBUG_LEVEL)
+		{
+#ifdef DEBUG_FLAG
+			char nameString[MAX_NAME_LENGTH];
+			getFunctionName(funcName, nameString);
+			PRINTF("Debug: %s: %d\r\n", nameString, integer);
+#endif
+		}
+		else if (level == STATUS_LEVEL)
+		{
+#ifdef STATUS_FLAG
+			char nameString[MAX_NAME_LENGTH];
+			getFunctionName(funcName, nameString);
+			PRINTF("Status: %s: %d\r\n", nameString, integer);
+#endif
+		}
+		else
+		{
+			// Do nothing
+		}
 	}
 }
