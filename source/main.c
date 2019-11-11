@@ -52,6 +52,7 @@
 #include "timing_control.h"
 #include "i2c_control.h"
 #include "state_machines.h"
+#include "project_4_tests.h"
 
 // KL25Z hardware includes/defines
 #include "board.h"
@@ -87,6 +88,11 @@ int main(void) {
     Log_enable();
 
 	color_sensor_init();
+
+#ifdef TEST_FLAG
+    runProject4Tests();
+#endif
+
 	uint8_t postTestPassed = 0;
     while (true)
     {

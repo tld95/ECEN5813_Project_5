@@ -29,7 +29,7 @@ void getFunctionName(Function_Names function, char* name)
 			strcpy(name, "LED Control");
 			break;
 		case RUN_STATE_MACHINES:
-			strcpy(name, "Run State Machine");
+			strcpy(name, "Run State Machines");
 			break;
 		case RUN_STATE_MACHINE_ONE:
 			strcpy(name, "Run State Machine One");
