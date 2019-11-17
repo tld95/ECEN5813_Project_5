@@ -43,32 +43,27 @@
  * PC_DEBUG For running on local PC without LED output with console output (with time stamps)
  */
 
-#include <color_sensor_control.h>
+#include <project_5_tests.h>
 #include <stddef.h>
 
 // Project 4 C modules
 #include "logger.h"
 #include "led_control.h"
 #include "timing_control.h"
-#include "i2c_control.h"
-#include "state_machines.h"
-#include "project_4_tests.h"
-
-// KL25Z hardware includes/defines
 #include "board.h"
 #include "peripherals.h"
 #include "pin_mux.h"
 #include "clock_config.h"
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
-
+#include "uart0_control.h"
+#include "circular_buffer.h"
 
 #define LED3_PORT GPIOD
 #define LED3_PIN 1U
 
-void i2c_init();
-void i2c_write_byte(uint8_t dev, uint8_t reg, uint8_t data);
-uint8_t i2c_read_byte(uint8_t dev, uint8_t reg);
+extern circularBuffer rxBuffer;
+extern circularBuffer txBuffer;
 
 int main(void) {
 
@@ -83,38 +78,31 @@ int main(void) {
     LED_GREEN_INIT(1);
     LED_BLUE_INIT(1);
 
+    uart0_Init(115200, NONE);
+
     led_control(OFF);
 
     Log_enable();
 
-	color_sensor_init();
-
 #ifdef TEST_FLAG
-    runProject4Tests();
+    runProject5Tests();
 #endif
 
-	uint8_t postTestPassed = 0;
-    while (true)
+    while (1)
     {
-		if (postTestPassed == 0)
-		{
-			status sensorStatus = color_sensor_POST_Test();
-			if (sensorStatus == FAILED)
-			{
-				led_control(RED);
-				Log_string(STATUS_LEVEL, MAIN, "POST Test Failed.");
-			}
-			else
-			{
-				Log_string(STATUS_LEVEL, MAIN, "POST Test Passed.");
-				postTestPassed = 1;
-			}
-		}
-		else
-		{
-			run_state_machines();
-		}
-		delay(100);
+#ifdef ECHO_MODE
+#ifdef UART_POLLING_DRIVEN
+    	uart0_PollingEchoCharacter();
+#endif
+#ifdef UART_INTERRUPT_DRIVEN
+    	uart0_InterruptEchoCharacter();
+#endif
+#endif
+
+#ifdef APPLICATION_MODE
+
+#endif
     }
+
     return 0 ;
 }
