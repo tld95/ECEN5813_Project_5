@@ -43,6 +43,8 @@ BOARD_InitPins:
   - {pin_num: '54', peripheral: GPIOB, signal: 'GPIO, 19', pin_signal: TSI0_CH12/PTB19/TPM2_CH1}
   - {pin_num: '2', peripheral: I2C1, signal: SCL, pin_signal: PTE1/SPI1_MOSI/UART1_RX/SPI1_MISO/I2C1_SCL, pull_enable: enable}
   - {pin_num: '1', peripheral: I2C1, signal: SDA, pin_signal: PTE0/UART1_TX/RTC_CLKOUT/CMP0_OUT/I2C1_SDA, pull_enable: enable}
+  - {pin_num: '51', peripheral: UART0, signal: RX, pin_signal: TSI0_CH9/PTB16/SPI1_MOSI/UART0_RX/TPM_CLKIN0/SPI1_MISO}
+  - {pin_num: '52', peripheral: SIM, signal: UART0_MOD_OUT, pin_signal: TSI0_CH10/PTB17/SPI1_MISO/UART0_TX/TPM_CLKIN1/SPI1_MOSI}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -61,6 +63,12 @@ void BOARD_InitPins(void)
     CLOCK_EnableClock(kCLOCK_PortD);
     /* Port E Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortE);
+
+    /* PORTB16 (pin 51) is configured as UART0_RX */
+    PORT_SetPinMux(BOARD_INITPINS_TSI_ELECTRODE_1_PORT, BOARD_INITPINS_TSI_ELECTRODE_1_PIN, kPORT_MuxAlt3);
+
+    /* PORTB17 (pin 52) is configured as UART0_TX */
+    PORT_SetPinMux(BOARD_INITPINS_TSI_ELECTRODE_2_PORT, BOARD_INITPINS_TSI_ELECTRODE_2_PIN, kPORT_MuxAlt3);
 
     /* PORTB18 (pin 53) is configured as PTB18 */
     PORT_SetPinMux(BOARD_INITPINS_LED_RED_PORT, BOARD_INITPINS_LED_RED_PIN, kPORT_MuxAsGpio);
@@ -96,6 +104,13 @@ void BOARD_InitPins(void)
                                                   kPORT_MuxAlt6};
     /* PORTE1 (pin 2) is configured as I2C1_SCL */
     PORT_SetPinConfig(PORTE, 1U, &porte1_pin2_config);
+
+    SIM->SOPT5 = ((SIM->SOPT5 &
+                   /* Mask bits to zero which are setting */
+                   (~(SIM_SOPT5_UART0RXSRC_MASK)))
+
+                  /* UART0 receive data source select: UART0_RX pin. */
+                  | SIM_SOPT5_UART0RXSRC(SOPT5_UART0RXSRC_UART_RX));
 }
 /***********************************************************************************************************************
  * EOF

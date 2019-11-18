@@ -25,6 +25,8 @@ extern "C" {
  */
 void BOARD_InitBootPins(void);
 
+#define SOPT5_UART0RXSRC_UART_RX 0x00u /*!<@brief UART0 receive data source select: UART0_RX pin */
+
 /*! @name PORTD1 (number 74), J2[12]/D3[3]/D13/LEDRGB_BLUE
   @{ */
 #define BOARD_INITPINS_LED_BLUE_GPIO GPIOD /*!<@brief GPIO device name: GPIOD */
@@ -45,6 +47,18 @@ void BOARD_InitBootPins(void);
 #define BOARD_INITPINS_LED_GREEN_PORT PORTB /*!<@brief PORT device name: PORTB */
 #define BOARD_INITPINS_LED_GREEN_PIN 19U    /*!<@brief PORTB pin index: 19 */
                                             /* @} */
+
+/*! @name PORTB16 (number 51), TSI0_CH9
+  @{ */
+#define BOARD_INITPINS_TSI_ELECTRODE_1_PORT PORTB /*!<@brief PORT device name: PORTB */
+#define BOARD_INITPINS_TSI_ELECTRODE_1_PIN 16U    /*!<@brief PORTB pin index: 16 */
+                                                  /* @} */
+
+/*! @name PORTB17 (number 52), TSI0_CH10
+  @{ */
+#define BOARD_INITPINS_TSI_ELECTRODE_2_PORT PORTB /*!<@brief PORT device name: PORTB */
+#define BOARD_INITPINS_TSI_ELECTRODE_2_PIN 17U    /*!<@brief PORTB pin index: 17 */
+                                                  /* @} */
 
 /*!
  * @brief Configures pin routing and optionally pin electrical features.

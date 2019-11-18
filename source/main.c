@@ -58,12 +58,10 @@
 #include "fsl_debug_console.h"
 #include "uart0_control.h"
 #include "circular_buffer.h"
+#include "application.h"
 
 #define LED3_PORT GPIOD
 #define LED3_PIN 1U
-
-extern circularBuffer rxBuffer;
-extern circularBuffer txBuffer;
 
 int main(void) {
 
@@ -79,6 +77,10 @@ int main(void) {
     LED_BLUE_INIT(1);
 
     uart0_Init(115200, NONE);
+
+#ifdef APPLICATION_MODE
+    applicationInit();
+#endif
 
     led_control(OFF);
 
@@ -100,7 +102,7 @@ int main(void) {
 #endif
 
 #ifdef APPLICATION_MODE
-// TODO
+    	processAndDisplayReceivedCharacters();
 #endif
     }
 

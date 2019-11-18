@@ -97,6 +97,10 @@ void Log_string(logLevel level, Function_Names funcName, char *string)
 			PRINTF("Status: %s: %s\r\n", nameString, string);
 #endif
 		}
+		else if (level == CUSTOM_FORMAT)
+		{
+			PRINTF("%s", string);
+		}
 		else
 		{
 			// Do nothing
@@ -137,4 +141,9 @@ void Log_integer(logLevel level, Function_Names funcName, size_t integer)
 			// Do nothing
 		}
 	}
+}
+
+void Log_newline()
+{
+	PRINTF("\r\n");
 }

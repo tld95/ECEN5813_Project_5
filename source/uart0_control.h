@@ -10,6 +10,7 @@
 
 #include <stdint.h>
 #include "MKL25Z4.h"
+#include "fsl_debug_console.h"
 
 // Referenced https://github.com/alexander-g-dean/ESF/blob/master/Code/Chapter_8/Serial-Demo/inc/UART.h
 #define UART_OVERSAMPLE_RATE 16
@@ -40,5 +41,6 @@ void uart0_InterruptTransmitCharacterOnAvailablity();
 void uart0_InterruptReceiveCharacterOnAvailability();
 void uart0_InterruptCheckErrors();
 void uart0_InterruptEchoCharacter();
+void uart0_InterruptCharacterCount();
 
 #endif

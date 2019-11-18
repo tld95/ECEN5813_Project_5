@@ -193,3 +193,4 @@ void uart0_InterruptEchoCharacter()
 	addItem(&txBuffer, character);
 	UART0->C2 |= UART_C2_TIE(1);
 }
+

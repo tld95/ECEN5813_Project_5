@@ -25,7 +25,8 @@ typedef enum logLevel
 {
 	TEST_LEVEL = 0,
 	DEBUG_LEVEL = 1,
-	STATUS_LEVEL = 2
+	STATUS_LEVEL = 2,
+	CUSTOM_FORMAT = 3,
 } logLevel;
 
 // Enables logging
@@ -40,5 +41,7 @@ void Log_data(logLevel level, Function_Names funcName, uint8_t *address, size_t 
 void Log_string(logLevel level, Function_Names funcName, char *string);
 // Logs an integer
 void Log_integer(logLevel level, Function_Names funcName, size_t integer);
+// Logs newline
+void Log_newline();
 
 #endif

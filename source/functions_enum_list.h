@@ -28,7 +28,9 @@ typedef enum function_names
 	RUN_STATE_MACHINE_TWO = 8,
 	// Time Control
 	DELAY = 9,
-	MAIN = 10
+	MAIN = 10,
+	// UART Application
+	DISPLAY_ASCII_TRACKER = 11,
 } Function_Names;
 
 void getFunctionName(Function_Names function, char* name);

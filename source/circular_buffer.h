@@ -4,6 +4,9 @@
  *	References:
  */
 
+#ifndef __CIRCULAR_BUFFER_H__
+#define __CIRCULAR_BUFFER_H__
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -52,3 +55,4 @@ circularBufferErrors checkIfBufferIsInitialized(circularBuffer *cBuffer);
 // Checks if buffer pointer is valid
 circularBufferErrors checkIfBufferPointerIsValid(circularBuffer *cBuffer);
 
+#endif
