@@ -24,11 +24,11 @@ typedef struct circularBuffer
 
 typedef enum circularBufferErrors
 {
-	BUFFER_FULL,
-	BUFFER_EMPTY,
-	BUFFER_UNINITIALIZED,
-	BUFFER_POINTER_INVALID,
-	NO_ERROR
+	NO_ERROR = 0,
+	BUFFER_FULL = 1,
+	BUFFER_EMPTY = 2,
+	BUFFER_UNINITIALIZED = 3,
+	BUFFER_POINTER_INVALID = 4,
 } circularBufferErrors;
 
 // Initializes circular buffer

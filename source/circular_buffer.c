@@ -2,6 +2,7 @@
  *  PES Project Five Circular Buffer Control source code implementation
  *	Tristan Duenas
  *	Refereneces:
+ *	PES CL19-L21 Data Handling.pdf
  */
 
 #include "circular_buffer.h"
@@ -23,6 +24,7 @@ circularBufferErrors destroyBuffer(circularBuffer *cBuffer)
 
 circularBufferErrors addItem(circularBuffer *cBuffer, uint8_t data)
 {
+	// Referenced PES CL19-L21 Data Handling.pdf
 	circularBufferErrors status = NO_ERROR;
 	status = checkIfBufferPointerIsValid(cBuffer);
 	if (status != NO_ERROR)
@@ -42,6 +44,7 @@ circularBufferErrors addItem(circularBuffer *cBuffer, uint8_t data)
 
 circularBufferErrors removeItem(circularBuffer *cBuffer, uint8_t *data)
 {
+	// Referenced PES CL19-L21 Data Handling.pdf
 	circularBufferErrors status = NO_ERROR;
 	status = checkIfBufferPointerIsValid(cBuffer);
 	if (status != NO_ERROR)
