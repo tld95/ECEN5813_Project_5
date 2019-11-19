@@ -2,12 +2,11 @@
 # Tristan Duenas
 # Project Demonstration YouTube Video Link https://www.youtube.com/watch?v=st7tk26AP1k&feature=share
 
-# Bruce Montgomery has approved not needing to submit an oscilloscope trace due to distance learning
-# resource limitations
+# Bruce Montgomery has approved not needing to submit an oscilloscope trace due to distance learning resource limitations
 
 # Project Files
 The source folder of the ECEN5813_Project_5 repository contains all of the files created by hand for this project.
-The FMEA is located in the main project directory, and is called ECEN 5813 Project 5 FMEA.xlsx
+# The FMEA is located in the main project directory, and is called ECEN 5813 Project 5 FMEA.xlsx
 
 uart0_control.c/.h: Contains implementation for UART0 initialization for polling/interrupt driven approaches
 at a baud rate of 115200, UART0 transmit for polling/interrupt driven approaches, and UART0 receiving for 
@@ -19,7 +18,7 @@ or handle the error.
 circular_buffer.c/.h: Contains definition for circular buffer, which includes a statically defined array of
 1024 characters, a head, a tail, and a count. The functionality for adding an item, removing and item, 
 checking if the buffer is full, checking if the buffer is empty, checking if the buffer is initialized,
-and checking if the buffer pointer is valid is also defined. Once buffer is full characters can only be 
+and checking if the buffer pointer is valid is also defined. Once buffer is full, characters can only be 
 added once characters are removed. Both the head and tail indices wrap arround the buffer successfully, 
 and are tested in the uCUNIT tests.
 
@@ -35,8 +34,9 @@ timing_control.c/.h: Contains new definition for SysTick initialization, time co
 interrupt handler, and getting a time stamp that shows how much time has passed since the program started in 
 "HH:MM:SS:n" format.
 
-logger.c/.h: Contains new function definitions for Project 5, as well as time stamps in logging integer/string 
-messages, which are received from timing_control.c.
+logger.c/.h: Contains new time stamps in logging integer/string messages, which are received from timing_control.c.
+
+functions_enums.c/.h: Contains new function definitions for Project 5 in enum list/function name string switch case.
 
 project_5_tests.c/.h: Contains 6 test cases with 23 checks, including, circular buffer initialization test, circular buffer data access test,
 circular buffer, wrap remove test, circular buffer wrap add test, circular buffer over fill test, and circular buffer over empty test.
@@ -58,6 +58,7 @@ Building requires performing a clean, then rebuild.
 # ECHO mode can be run with polling or interrupt driven builds. DEBUG adds debugging output.
 # Building for the APPLICATION build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the APPLICATION_MODE
 # Application mode should be run with the interrupt driven builds. DEBUG adds debugging output.
+# The carriage return character is used to indicate the end of an entered string during application mode, so putting the characters in the terminal entry and then pressing enter is all that is needed.
 # Building for the INTERRUPT build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the UART_INTERRUPT_DRIVEN
 # Building for the POLLING build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the UART_POLLING_DRIVEN
 # Building for the TEST build requires going to Project Properties/Settings/Tool Settings/Preprocessor/ and adding the TEST_FLAG
