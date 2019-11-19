@@ -131,8 +131,3 @@ void circularBufferOverEmptyTest()
 	status |= removeItem(&testBuffer, &dataRemoved);
 	UCUNIT_CheckIsEqual(status, BUFFER_EMPTY);
 }
-
-void circularBufferDestroyTest()
-{
-	// TODO
-}

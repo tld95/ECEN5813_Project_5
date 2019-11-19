@@ -16,12 +16,6 @@ circularBufferErrors initializeBuffer(circularBuffer *cBuffer)
 	return checkIfBufferIsInitialized(cBuffer);
 }
 
-circularBufferErrors destroyBuffer(circularBuffer *cBuffer)
-{
-	free(cBuffer->buffer);
-	return NO_ERROR;
-}
-
 circularBufferErrors addItem(circularBuffer *cBuffer, uint8_t data)
 {
 	// Referenced PES CL19-L21 Data Handling.pdf
@@ -29,6 +23,7 @@ circularBufferErrors addItem(circularBuffer *cBuffer, uint8_t data)
 	status = checkIfBufferPointerIsValid(cBuffer);
 	if (status != NO_ERROR)
 	{
+		led_control(RED);
 		return status;
 	}
 	status = checkIfBufferIsFull(cBuffer);
@@ -37,7 +32,10 @@ circularBufferErrors addItem(circularBuffer *cBuffer, uint8_t data)
 		return status;
 	}
 	cBuffer->buffer[cBuffer->head] = data;
+	// Disable interrupts in critical section since code is not atomic
+	START_CRITICAL();
 	cBuffer->head = (cBuffer->head + 1) & (cBuffer->length-1);
+	END_CRITICAL();
 	cBuffer->count++;
 	return status;
 }
@@ -49,6 +47,7 @@ circularBufferErrors removeItem(circularBuffer *cBuffer, uint8_t *data)
 	status = checkIfBufferPointerIsValid(cBuffer);
 	if (status != NO_ERROR)
 	{
+		led_control(RED);
 		return status;
 	}
 	status = checkIfBufferIsEmpty(cBuffer);
@@ -57,7 +56,10 @@ circularBufferErrors removeItem(circularBuffer *cBuffer, uint8_t *data)
 		return status;
 	}
 	*data = cBuffer->buffer[cBuffer->tail];
+	// Disable interrupts in critical section since code is not atomic
+	START_CRITICAL();
 	cBuffer->tail = (cBuffer->tail + 1) & (cBuffer->length-1);
+	END_CRITICAL();
 	cBuffer->count--;
 	return status;
 }
@@ -66,6 +68,7 @@ circularBufferErrors checkIfBufferIsFull(circularBuffer *cBuffer)
 {
 	if (cBuffer->count == cBuffer->length)
 	{
+		led_control(RED);
 		return BUFFER_FULL;
 	}
 	return NO_ERROR;
@@ -84,6 +87,7 @@ circularBufferErrors checkIfBufferIsInitialized(circularBuffer *cBuffer)
 {
 	if (checkIfBufferPointerIsValid(cBuffer) != NO_ERROR)
 	{
+		led_control(RED);
 		return BUFFER_UNINITIALIZED;
 	}
 	return NO_ERROR;
@@ -94,6 +98,7 @@ circularBufferErrors checkIfBufferPointerIsValid(circularBuffer *cBuffer)
 {
 	if ((cBuffer == NULL) || (cBuffer->buffer == NULL))
 	{
+		led_control(RED);
 		return BUFFER_POINTER_INVALID;
 	}
 	return NO_ERROR;

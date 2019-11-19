@@ -63,9 +63,9 @@
 							<tool id="com.crt.advproject.gcc.exe.debug.572584423" name="MCU C Compiler" superClass="com.crt.advproject.gcc.exe.debug">
 								<option id="com.crt.advproject.gcc.hdrlib.54451252" name="Library headers" superClass="com.crt.advproject.gcc.hdrlib" useByScannerDiscovery="false"/>
 								<option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.compiler.option.preprocessor.def.symbols.1231475150" name="Defined symbols (-D)" superClass="gnu.c.compiler.option.preprocessor.def.symbols" useByScannerDiscovery="false" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="ECHO_MODE"/>
 									<listOptionValue builtIn="false" value="STATUS_FLAG"/>
-									<listOptionValue builtIn="false" value="UART_INTERRUPT_DRIVEN"/>
-									<listOptionValue builtIn="false" value="APPLICATION_MODE"/>
+									<listOptionValue builtIn="false" value="UART_POLLING_DRIVEN"/>
 									<listOptionValue builtIn="false" value="FB_DEBUG"/>
 									<listOptionValue builtIn="false" value="__REDLIB__"/>
 									<listOptionValue builtIn="false" value="CPU_MKL25Z128VLK4"/>
@@ -597,8 +597,8 @@
 &lt;vendor&gt;NXP&lt;/vendor&gt;&#13;
 &lt;memory can_program="true" id="Flash" is_ro="true" size="0" type="Flash"/&gt;&#13;
 &lt;memory id="RAM" size="0" type="RAM"/&gt;&#13;
-&lt;memoryInstance derived_from="Flash" driver="FTFA_1K.cfx" id="PROGRAM_FLASH" location="0x00000000" size="0x00020000"/&gt;&#13;
-&lt;memoryInstance derived_from="RAM" id="SRAM" location="0x1ffff000" size="0x00004000"/&gt;&#13;
+&lt;memoryInstance derived_from="Flash" driver="FTFA_1K.cfx" id="PROGRAM_FLASH" location="0x0" size="0x20000"/&gt;&#13;
+&lt;memoryInstance derived_from="RAM" id="SRAM" location="0x1ffff000" size="0x4000"/&gt;&#13;
 &lt;/chip&gt;&#13;
 &lt;processor&gt;&#13;
 &lt;name gcc_name="cortex-m0plus"&gt;Cortex-M0+&lt;/name&gt;&#13;

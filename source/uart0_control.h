@@ -3,6 +3,7 @@
  *	Tristan Duenas
  *	References:
  *	https://github.com/alexander-g-dean/ESF/blob/master/Code/Chapter_8/Serial-Demo/inc/UART.h
+ *	https://mcuoneclipse.com/2015/10/16/nvic-disabling-interrupts-on-arm-cortex-m-and-the-need-for-a-memory-barrier-instruction/
  */
 
 #ifndef __UART0_CONTROL_H__
@@ -11,10 +12,16 @@
 #include <stdint.h>
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
+#include "led_control.h"
+#include "timing_control.h"
 
 // Referenced https://github.com/alexander-g-dean/ESF/blob/master/Code/Chapter_8/Serial-Demo/inc/UART.h
 #define UART_OVERSAMPLE_RATE 16
 #define BUS_CLOCK 24e6
+
+// Referenced https://mcuoneclipse.com/2015/10/16/nvic-disabling-interrupts-on-arm-cortex-m-and-the-need-for-a-memory-barrier-instruction/
+#define START_CRITICAL() NVIC_DisableIRQ(UART0_IRQn)
+#define END_CRITICAL() NVIC_EnableIRQ(UART0_IRQn)
 
 typedef enum parity
 {

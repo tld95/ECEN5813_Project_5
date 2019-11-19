@@ -13,6 +13,8 @@ circularBuffer txBuffer;
 
 void uart0_Init(uint32_t baudRate, Parity parity)
 {
+	led_control(BLUE);
+
 	// Referenced https://github.com/alexander-g-dean/ESF/blob/master/Code/Chapter_8/Serial-Demo/src/UART.c
 	uint16_t sbr = 0;
 
@@ -163,6 +165,8 @@ void uart0_InterruptCheckErrors()
 	uint8_t character;
 	if (UART0->S1 & (UART_S1_OR_MASK | UART_S1_NF_MASK |
 		UART_S1_FE_MASK | UART_S1_PF_MASK)) {
+
+			led_control(RED);
 			// clear the error flags
 			UART0->S1 |= UART0_S1_OR_MASK | UART0_S1_NF_MASK |
 									UART0_S1_FE_MASK | UART0_S1_PF_MASK;
@@ -180,17 +184,31 @@ void uart0_InterruptEchoCharacter()
 {
 	uint8_t character;
 	UART0->C2 &= ~UART0_C2_TIE_MASK;
+	led_control(BLUE);
 	while (checkIfBufferIsEmpty(&rxBuffer) != NO_ERROR)
 	{
 		__asm("NOP");
 	}
 	removeItem(&rxBuffer, &character);
 
+	led_control(GREEN);
+	delay(50);
 	while (checkIfBufferIsFull(&txBuffer) != NO_ERROR)
 	{
 		__asm("NOP");
 	}
 	addItem(&txBuffer, character);
 	UART0->C2 |= UART_C2_TIE(1);
+
+#ifdef DEBUG_FLAG
+	char buf[3];
+	buf[0] = character;
+	buf[1] = ' ';
+	buf[2] = '\0';
+	if (character != '\r')
+	{
+		Log_string(DEBUG_LEVEL, UART_0_INTERRUPT_ECHO_CHARACTERS, buf);
+	}
+#endif
 }
 

@@ -19,6 +19,9 @@
 #define CLOCK_DIVISOR 2.0
 #endif
 
+#include "MKL25Z4.h"
+#include "logger.h"
+
 #define MILLI_SEC_IN_SEC 1000.0
 
 /*
@@ -31,5 +34,8 @@
  * amount of cycles to wait for n milliseconds.
  */
 void delay(volatile uint32_t mSec);
+void initSysTick();
+void SysTick_Handler();
+void getTimeStamp(char* timeStamp);
 
 #endif

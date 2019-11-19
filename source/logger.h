@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include "fsl_debug_console.h"
 #include "functions_enum_list.h"
+#include "timing_control.h"
 
 typedef enum logStatus
 {

@@ -20,6 +20,7 @@ void applicationInit()
 void processAndDisplayReceivedCharacters()
 {
 	uint8_t character;
+	led_control(BLUE);
 	while (checkIfBufferIsEmpty(&rxBuffer) != NO_ERROR)
 	{
 		__asm("NOP");
@@ -34,6 +35,8 @@ void processAndDisplayReceivedCharacters()
 		}
 	}
 
+	led_control(GREEN);
+	delay(50);
 	if (character == '\r')
 	{
 		displayASCII_Tracker();
@@ -61,4 +64,5 @@ void displayASCII_Tracker()
 		}
 	}
 	Log_newline();
+	Log_string(DEBUG_LEVEL, DISPLAY_ASCII_TRACKER, "ASCII Count Printed");
 }

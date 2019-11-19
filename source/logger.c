@@ -76,25 +76,31 @@ void Log_string(logLevel level, Function_Names funcName, char *string)
 		if (level == TEST_LEVEL)
 		{
 #ifdef TEST_FLAG
+			char timeStamp[15];
+			getTimeStamp(timeStamp);
 			char nameString[MAX_NAME_LENGTH];
 			getFunctionName(funcName, nameString);
-			PRINTF("Test: %s: %s\r\n", nameString, string);
+			PRINTF("Test: %s: %s %s\r\n", nameString, string, timeStamp);
 #endif
 		}
 		else if (level == DEBUG_LEVEL)
 		{
 #ifdef DEBUG_FLAG
+			char timeStamp[15];
+			getTimeStamp(timeStamp);
 			char nameString[MAX_NAME_LENGTH];
 			getFunctionName(funcName, nameString);
-			PRINTF("Debug: %s: %s\r\n", nameString, string);
+			PRINTF("Debug: %s: %s %s\r\n", nameString, string, timeStamp);
 #endif
 		}
 		else if (level == STATUS_LEVEL)
 		{
 #ifdef STATUS_FLAG
+			char timeStamp[15];
+			getTimeStamp(timeStamp);
 			char nameString[MAX_NAME_LENGTH];
 			getFunctionName(funcName, nameString);
-			PRINTF("Status: %s: %s\r\n", nameString, string);
+			PRINTF("Status: %s: %s %s %s\r\n", nameString, string, timeStamp);
 #endif
 		}
 		else if (level == CUSTOM_FORMAT)
@@ -115,25 +121,31 @@ void Log_integer(logLevel level, Function_Names funcName, size_t integer)
 		if (level == TEST_LEVEL)
 		{
 #ifdef TEST_FLAG
+			char timeStamp[15];
+			getTimeStamp(timeStamp);
 			char nameString[MAX_NAME_LENGTH];
 			getFunctionName(funcName, nameString);
-			PRINTF("Test: %s: %d\r\n", nameString, integer);
+			PRINTF("Test: %s: %d %s\r\n", nameString, integer, timeStamp);
 #endif
 		}
 		else if (level == DEBUG_LEVEL)
 		{
 #ifdef DEBUG_FLAG
+			char timeStamp[15];
+			getTimeStamp(timeStamp);
 			char nameString[MAX_NAME_LENGTH];
 			getFunctionName(funcName, nameString);
-			PRINTF("Debug: %s: %d\r\n", nameString, integer);
+			PRINTF("Debug: %s: %d %s\r\n", nameString, integer, timeStamp);
 #endif
 		}
 		else if (level == STATUS_LEVEL)
 		{
 #ifdef STATUS_FLAG
+			char timeStamp[15];
+			getTimeStamp(timeStamp);
 			char nameString[MAX_NAME_LENGTH];
 			getFunctionName(funcName, nameString);
-			PRINTF("Status: %s: %d\r\n", nameString, integer);
+			PRINTF("Status: %s: %d %s\r\n", nameString, integer, timeStamp);
 #endif
 		}
 		else

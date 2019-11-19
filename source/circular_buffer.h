@@ -10,6 +10,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+#include "uart0_control.h"
+#include "led_control.h"
 
 #define MAX_BUFFER_SIZE 1024
 
@@ -33,9 +35,6 @@ typedef enum circularBufferErrors
 
 // Initializes circular buffer
 circularBufferErrors initializeBuffer(circularBuffer *cBuffer);
-
-// Destroy circular buffer
-circularBufferErrors destroyBuffer(circularBuffer *cBuffer);
 
 // Adds item to buffer and errors if buffer is full
 circularBufferErrors addItem(circularBuffer *cBuffer, uint8_t data);

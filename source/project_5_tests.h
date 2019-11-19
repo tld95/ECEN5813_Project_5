@@ -13,6 +13,5 @@ void circularBufferWrapRemoveTest();
 void circularBufferWrapAddTest();
 void circularBufferOverfillTest();
 void circularBufferOverEmptyTest();
-void circularBufferDestroyTest();
 
 #endif

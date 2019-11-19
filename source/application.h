@@ -14,6 +14,7 @@
 #include "logger.h"
 #include "uart0_control.h"
 #include "circular_buffer.h"
+#include "timing_control.h"
 
 #define ASCII_CHARACTERS 128
 

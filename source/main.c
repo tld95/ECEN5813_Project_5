@@ -72,6 +72,8 @@ int main(void) {
   	/* Init FSL debug console. */
     BOARD_InitDebugConsole();
 
+    initSysTick();
+
     LED_RED_INIT(1);
     LED_GREEN_INIT(1);
     LED_BLUE_INIT(1);
