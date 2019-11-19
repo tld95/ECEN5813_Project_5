@@ -40,8 +40,7 @@ functions_enums.c/.h: Contains new function definitions for Project 5 in enum li
 
 project_5_tests.c/.h: Contains 6 test cases with 23 checks, including, circular buffer initialization test, circular buffer data access test,
 circular buffer, wrap remove test, circular buffer wrap add test, circular buffer over fill test, and circular buffer over empty test.
-# In video demonstration all 23 check cases and 6 test cases were included, but final results said 4 test cases passed
-# since I was missing UCUNIT_TestcaseEnd() at the end of the last 2 test cases, but they all passed since all of the check cases passed.
+# In video demonstration all 23 check cases and 6 test cases were included, but final results said 4 test cases passed since I was missing UCUNIT_TestcaseEnd() at the end of the last 2 test cases, but they all passed since all of the check cases passed.
 
 # Observations
 I experienced issues with using dynamic memory with the global rx/tx circular buffers, when debugging the memory addresses could not be found.
