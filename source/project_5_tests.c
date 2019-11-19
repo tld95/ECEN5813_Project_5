@@ -117,6 +117,7 @@ void circularBufferOverfillTest()
 
 	status |= addItem(&testBuffer, dataAdded);
 	UCUNIT_CheckIsEqual(status, BUFFER_FULL);
+	UCUNIT_TestcaseEnd();
 }
 
 void circularBufferOverEmptyTest()
@@ -130,4 +131,5 @@ void circularBufferOverEmptyTest()
 	uint8_t dataRemoved;
 	status |= removeItem(&testBuffer, &dataRemoved);
 	UCUNIT_CheckIsEqual(status, BUFFER_EMPTY);
+	UCUNIT_TestcaseEnd();
 }
