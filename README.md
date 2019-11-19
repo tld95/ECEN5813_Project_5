@@ -1,5 +1,5 @@
 # ECEN5813 Project 5 Readme
-# Tristan Duenas
+# Tristan Duenas 
 # Project Demonstration YouTube Video Link https://www.youtube.com/watch?v=st7tk26AP1k&feature=share
 
 # Bruce Montgomery has approved not needing to submit an oscilloscope trace due to distance learning resource limitations
